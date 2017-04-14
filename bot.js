@@ -54,9 +54,9 @@ This bot demonstrates many of the core features of Botkit:
 var env = require('node-env-file');
 env(__dirname + '/.env');
 
-
-if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
-  console.log('Error: Specify clientId clientSecret and PORT in environment');
+//Note: Heroku assigns a $PORT variable
+if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT) {
+  console.log('Error: Specify CLIENT_ID, CLIENT_SECRET and PORT in environment');
   usage_tip();
   process.exit(1);
 }
@@ -66,11 +66,11 @@ var debug = require('debug')('botkit:main');
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot({
-    clientId: process.env.clientId,
-    clientSecret: process.env.clientSecret,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
     // debug: true,
     scopes: ['bot'],
-    studio_token: process.env.studio_token,
+    studio_token: process.env.STUDIO_TOKEN,
     studio_command_uri: process.env.studio_command_uri,
     json_file_store: __dirname + '/.db/' // store user data in a simple JSON format
 });
