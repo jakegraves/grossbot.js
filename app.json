@@ -1,7 +1,7 @@
 {
-  "name": "Botkit Starter Kit",
-  "description": "A starting point for building custom Slack applications",
-  "repository": "https://github.com/howdyai/botkit-starter-slack",
+  "name": "Reaction Bot",
+  "description": "A Slack bot that likes to react to what you say",
+  "repository": "https://github.com/richardshi97/reactionbot.js",
   "keywords": ["node", "bots", "slack","botkit"],
   "website": "https://studio.botkit.ai/",
   "success_url":"/",

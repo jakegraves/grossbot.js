@@ -1,7 +1,7 @@
 {
-  "name": "botkit-starter-slack",
+  "name": "reactionbot.js",
   "version": "0.0.2",
-  "description": "A starter kit for building a custom Slack bot with Botkit Studio",
+  "description": "A Slack bot that likes to react to you",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
@@ -21,17 +21,13 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/howdyai/botkit-starter-slack.git"
+    "url": "https://github.com/richardshi97/reactionbot.js"
   },
-  "bugs": {
-    "url": "https://github.com/howdyai/botkit-starter-slack/issues"
-  },
-  "homepage": "https://github.com/howdyai/botkit-starter-slack",
   "keywords": [
     "bots",
     "chatbots",
     "slack"
   ],
-  "author": "ben@howdy.ai",
-  "license": "ISC"
+  "author": "mail@richardshi.com",
+  "license": "MIT"
 }
