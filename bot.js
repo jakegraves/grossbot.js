@@ -44,10 +44,10 @@ require(__dirname + '/components/onboarding.js')(controller);
 // no longer necessary since slack now supports the always on event bots
 // // Set up a system to manage connections to Slack's RTM api
 // // This will eventually be removed when Slack fixes support for bot presence
-// var rtm_manager = require(__dirname + '/components/rtm_manager.js')(controller);
-//
-// // Reconnect all pre-registered bots
-// rtm_manager.reconnect();
+var rtm_manager = require(__dirname + '/components/rtm_manager.js')(controller);
+
+// Reconnect all pre-registered bots
+rtm_manager.reconnect();
 
 // Enable Dashbot.io plugin
 require(__dirname + '/components/plugin_dashbot.js')(controller);
