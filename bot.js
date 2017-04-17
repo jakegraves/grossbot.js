@@ -4,14 +4,19 @@
 var env = require('dotenv');
 env.config();
 
-if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT) {
-  console.log('Error: Specify CLIENT_ID, CLIENT_SECRET and PORT in environment');
+if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT || !process.env.DATABASE_URL) {
+  console.log('Error: Specify CLIENT_ID, CLIENT_SECRET, DATABASE_URL and PORT in environment');
   usage_tip();
   process.exit(1);
 }
 
 var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
+var pg = require('pg');
+var storage = require('botkit-storage-postgres');
+
+// Setup postgres SSL
+pg.defaults.ssl = true;
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot({
@@ -21,7 +26,8 @@ var controller = Botkit.slackbot({
     scopes: ['bot'],
     studio_token: process.env.STUDIO_TOKEN,
     studio_command_uri: process.env.studio_command_uri,
-    json_file_store: __dirname + '/.db/' // store user data in a simple JSON format
+    //json_file_store: __dirname + '/.db/' // store user data in a simple JSON format
+    storage: storage(database_config(process.env.DATABASE_URL))
 });
 
 controller.startTicking();
@@ -52,8 +58,6 @@ var normalizedPath = require("path").join(__dirname, "skills");
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
   require("./skills/" + file)(controller);
 });
-
-
 
 // This captures and evaluates any message sent to the bot as a DM
 // or sent to the bot in the form "@bot message" and passes it to
@@ -86,9 +90,6 @@ if (process.env.studio_token) {
     console.log('To enable, pass in a studio_token parameter with a token from https://studio.botkit.ai/');
 }
 
-
-
-
 function usage_tip() {
     console.log('~~~~~~~~~~');
     console.log('Botkit Starter Kit');
@@ -97,4 +98,19 @@ function usage_tip() {
     console.log('Get Slack app credentials here: https://api.slack.com/apps')
     console.log('Get a Botkit Studio token here: https://studio.botkit.ai/')
     console.log('~~~~~~~~~~');
+}
+
+function database_config(uri){
+    let regex = /^postgres:\/\/(\S+):(\S+)@(\S+)\/(\S+)$/g;
+    let match = regex.exec(uri);
+
+    if(match[4]){
+        let obj = {
+            user: match[1],
+            password: match[2],
+            host: match[3],
+            database: match[4]
+        };
+        return obj;
+    }  
 }
