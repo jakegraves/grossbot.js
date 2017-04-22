@@ -14,8 +14,8 @@ var debug = require('debug')('botkit:main');
 var pg = require('pg');
 var storage = require('botkit-storage-postgres');
 
-// Setup postgres SSL
-pg.defaults.ssl = true;
+// Setup postgres SSL for Heroku
+// pg.defaults.ssl = true;
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot({
@@ -44,10 +44,10 @@ require(__dirname + '/components/onboarding.js')(controller);
 // no longer necessary since slack now supports the always on event bots
 // // Set up a system to manage connections to Slack's RTM api
 // // This will eventually be removed when Slack fixes support for bot presence
-var rtm_manager = require(__dirname + '/components/rtm_manager.js')(controller);
+// var rtm_manager = require(__dirname + '/components/rtm_manager.js')(controller);
 
 // Reconnect all pre-registered bots
-rtm_manager.reconnect();
+// rtm_manager.reconnect();
 
 // Enable Dashbot.io plugin
 require(__dirname + '/components/plugin_dashbot.js')(controller);
@@ -56,7 +56,7 @@ console.log('Importing skill modules...');
 console.log('~~~~~~~~~~');
 var normalizedPath = require("path").join(__dirname, "skills");
 require("fs").readdirSync(normalizedPath).forEach(function(file) {
-    if(file.endsWith('.js')){
+    if(file.endsWith('.js') && !file.startsWith('.#')){
         console.log('Importing ' + file);
         require("./skills/" + file)(controller);
     }
