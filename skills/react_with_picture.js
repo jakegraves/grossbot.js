@@ -2,6 +2,8 @@
 
 module.exports = function(controller) {
 
+    //TODO: Use more than just the team table
+
     // Each list of triggers for a certain entity (either a user, channel,
     // or team) is stored in the database as so:
     // {
@@ -13,19 +15,18 @@ module.exports = function(controller) {
     //     }
     // }
 
-    // However, our in-memory store is just one big array of trigger keys   
-    // TODO: A better way of storing this cause this scales incredibly poorly
-    // TODO: Permissions
+    // To allow for easy manipulation of trigger words, we then get only the keys
+    // and put it into an array
     let keywords = [];
 
+    //TODO: Create different handlers for each team instead of handling all of them in these handlers here
 
     // Load keywords with team-scope triggers from storage
     controller.storage.teams.all((err, all_team_data) => {
         if(!err){
-            //console.log(all_team_data);
             all_team_data.forEach((team_data) => {
-                if(team_data.hasOwnProperty('triggers')){
-                    keywords.concat(team_data.triggers.keys());
+                if(team_data.triggers){
+                    keywords = keywords.concat(Object.keys(team_data.triggers));
                 } else {
                     console.log('Could not find triggers for team with id: ' + team_data.id);
                 }
@@ -33,6 +34,9 @@ module.exports = function(controller) {
         } else{
             console.log(err);
         }
+
+        // Log final state of keywords
+        // console.log(keywords);
     });
 
     //Add a reaction to reactionbot 
