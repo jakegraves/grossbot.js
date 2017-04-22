@@ -8,7 +8,12 @@ module.exports = function(controller) {
     let prevent_idle = function(){
 
         console.log('Sending request to host.');
-        http.get("http://reactionbot-js.herokuapp.com/");
+
+        if(bot_url = process.env.BOT_URL){
+            http.get(bot_url);
+        } else {
+            console.log("Error: No bot url to keep awake!");
+        }
         
         wait_time = (Math.floor(Math.random() * 10) + 1) * 60000;
         timeout = setTimeout(prevent_idle, wait_time); 
