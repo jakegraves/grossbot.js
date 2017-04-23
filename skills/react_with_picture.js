@@ -17,7 +17,7 @@ module.exports = function(controller) {
 
     // To allow for easy manipulation of trigger words, we then get only the keys
     // and put it into an array
-    let keywords = [];
+    var keywords = [];
 
     //TODO: Create different handlers for each team instead of handling all of them in these handlers here
 
@@ -26,7 +26,11 @@ module.exports = function(controller) {
         if(!err){
             all_team_data.forEach((team_data) => {
                 if(team_data.triggers){
-                    keywords = keywords.concat(Object.keys(team_data.triggers));
+                    let team_triggers = Object.keys(team_data.triggers);
+                    team_triggers.forEach((trigger) => {
+                        // I'm directly mutating keywords cause Javascript is pass by a COPY of a reference
+                        keywords.push(trigger); 
+                    });
                 } else {
                     console.log('Could not find triggers for team with id: ' + team_data.id);
                 }
@@ -36,7 +40,7 @@ module.exports = function(controller) {
         }
 
         // Log final state of keywords
-        // console.log(keywords);
+        console.log(keywords);
     });
 
     //Add a reaction to reactionbot 
@@ -118,7 +122,7 @@ module.exports = function(controller) {
             bot.reply(message, "I don't think you gave me a WORD to remove. Please try again.");
         }
     });
-    // TODO: TEST ME 
+
     //Get command
     controller.hears('^get (.*)', 'direct_message,direct_mention', function(bot, message){
         if (trigger = message.match[1]){
@@ -146,7 +150,7 @@ module.exports = function(controller) {
 
     // TODO: TEST ME 
     // Listen for a keyword and post a reaction image if you hear it
-    controller.hears(keywords, 'message_received', function(bot, message) {
+    controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
             if(!err){
                 bot.reply(message, {
@@ -169,17 +173,22 @@ module.exports = function(controller) {
     // Test a word
     controller.hears('^test (.*)', 'direct_message,direct_mention', function(bot, message){
         if(word = message.match[1]){
-            console.log("The message is: ");
-            console.log(word);
-            bot.reply(message, {
-                'text': '',
-                'attachments': [
-                    {
-                        'text': '',
-                        'image_url': extract_url(word)
-                    }
-                ]
-            });
+            console.log('Pushing \'' + word + '\' into keywords');
+            keywords.push(word);
+            console.log('Final state of keywords: ');
+            console.log(keywords);
+
+            // console.log("The message is: ");
+            // console.log(word);
+            // bot.reply(message, {
+            //     'text': '',
+            //     'attachments': [
+            //         {
+            //             'text': '',
+            //             'image_url': extract_url(word)
+            //         }
+            //     ]
+            // });
         }
     });
  
