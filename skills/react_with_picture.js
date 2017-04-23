@@ -44,8 +44,6 @@ module.exports = function(controller) {
     });
 
     //Add a reaction to reactionbot 
-    // TODO: TEST ME 
-    //TODO: Let you add for you, your channel, or your team only
     controller.hears('^add (.*) (.*)', 'direct_message,direct_mention', function(bot, message) {
         let trigger = message.match[1];
         let reaction = message.match[2];
@@ -57,7 +55,6 @@ module.exports = function(controller) {
         if (trigger && reaction){
             bot.reply(message, "Sure, I'll react to  \"" + trigger + "\" with \"" + reaction + "\" now :grinning:"); 
 
-            //TODO: I should be using promises tbh
             controller.storage.teams.get(message.team, function(err, team_data){
                 if(!err){
                     team_data.triggers = team_data.triggers || {}; //Create a new triggers obj if it doesnt exist
@@ -92,7 +89,7 @@ module.exports = function(controller) {
             bot.reply(message, "I didn't understand you sorry :disappointed:. I need a WORD to react to and a REACTION to react with");
         }
     });
-    // TODO: TEST ME 
+    
     // Remove command
     controller.hears('^remove (.*)', 'direct_message,direct_mention', function(bot, message) {
         if (trigger = message.match[1]){
@@ -148,7 +145,6 @@ module.exports = function(controller) {
         }
     });
 
-    // TODO: TEST ME 
     // Listen for a keyword and post a reaction image if you hear it
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
@@ -170,42 +166,30 @@ module.exports = function(controller) {
         });
     });
 
-    // Test a word
-    controller.hears('^test (.*)', 'direct_message,direct_mention', function(bot, message){
-        if(word = message.match[1]){
-            console.log('Pushing \'' + word + '\' into keywords');
-            keywords.push(word);
-            console.log('Final state of keywords: ');
-            console.log(keywords);
+    controller.hears('^list', 'direct_message,direct_mention', function(bot, message){
+        controller.storage.teams.all((err, all_team_data) => {
+            if(!err){
+                console.log(message.team + ' is asking for a keyword list!');
+                console.log(all_team_data);
 
-            // console.log("The message is: ");
-            // console.log(word);
-            // bot.reply(message, {
-            //     'text': '',
-            //     'attachments': [
-            //         {
-            //             'text': '',
-            //             'image_url': extract_url(word)
-            //         }
-            //     ]
-            // });
-        }
-    });
- 
-    controller.hears('^testdb (.*)', 'direct_message,direct_mention', function(bot, message){
-        if(word = message.match[1]){
-            controller.storage.teams.get(word, (err, team_data) => {
-                if(!err){
-                    console.log('team data: ');
-                    console.log(team_data);
-                } else{
-                    console.log('error: ');
-                    console.log(err);
+                let team = all_team_data.find(team => team.id === message.team);
+                if(team && team.triggers){
+                    let trigger_list = Object.keys(all_team_data[message.team].triggers);
+                    let response = trigger_list.reduce((accumulator, value) => {
+                        return accumulator + value + "\n";
+                    }, "Trigger word list: \n ```");
+                    response += "``` To use any of the above, see help command"; 
+
+                    bot.reply(message, response);
+                } else {
+                    bot.reply(message, "I couldn't find any triggers words registered for team. :/");
                 }
-            });
-        }
+            } else {
+                bot.reply(message, "Sorry, I couldn't get the list of keywords");
+                console.log(err);
+            }
+        });
     });
-
 
     /***************************************************************************/
     //TODO: Removing HTML characters?
