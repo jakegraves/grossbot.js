@@ -75,7 +75,7 @@ function database_config(uri){
     console.log("URI: " + uri)
     console.log(match);
 
-    if(match[5]){
+    if(match && match[5]){
         let obj = {
             user: match[1],
             password: match[2],
