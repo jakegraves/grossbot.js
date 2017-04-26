@@ -71,6 +71,9 @@ function database_config(uri){
     let regex = /^postgres:\/\/(\S+):(\S+)@(\S+)\/(\S+)$/g;
     let match = regex.exec(uri);
 
+    console.log("URI: " + uri)
+    console.log(match);
+
     if(match[4]){
         let obj = {
             user: match[1],
