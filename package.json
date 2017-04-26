@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
-    "botkit": "^0.5",
+    "botkit": "richardshi97/botkit",
     "botkit-storage-postgres": "fluidly/botkit-storage-postgres",
     "dashbot": "0.7.4",
     "debug": "^2.3.3",
