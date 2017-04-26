@@ -6,11 +6,23 @@
   "website": "https://studio.botkit.ai/",
   "success_url":"/",
   "env": {
+      "VERSION": {
+          "description": "ReactionBot Version"
+      },
+      "DATABASE_URL": {
+          "description": "Database access URI"
+      },
+      "BOT_URL": {
+          "description": "URL of the bot server"  
+      },
       "CLIENT_ID": {
           "description": "Client ID provided by Slack"
       },
       "CLIENT_SECRET": {
           "description": "Client Secret provided by Slack"
+      },
+      "PORT": {
+          "description": "Port to open server on"
       },
       "STUDIO_TOKEN": {
           "description": "Token associated with your bot in Botkit Studio",
