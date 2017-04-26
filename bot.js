@@ -15,7 +15,7 @@ var pg = require('pg');
 var storage = require('botkit-storage-postgres');
 
 // Setup postgres SSL for Heroku
-// pg.defaults.ssl = true;
+pg.defaults.ssl = true;
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot({
@@ -61,6 +61,8 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
         require("./skills/" + file)(controller);
     }
 });
+
+
 
 // Show we're running
 controller.log.info("Running ReactionBot...");
