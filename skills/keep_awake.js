@@ -6,13 +6,11 @@ module.exports = function(controller) {
 
     /* Ping app a random amount of minutes (between 1 and 10) */
     let prevent_idle = function(){
-
-        console.log('Sending request to host.');
-
         if(bot_url = process.env.BOT_URL){
+            console.log("Sending request to host: " + bot_url);
             http.get(bot_url);
         } else {
-            console.log("Error: No bot url to keep awake!");
+            console.log("Error: No bot url to keep awake");
         }
         
         wait_time = (Math.floor(Math.random() * 10) + 1) * 60000;

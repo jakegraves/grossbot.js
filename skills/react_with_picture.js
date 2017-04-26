@@ -40,7 +40,7 @@ module.exports = function(controller) {
         }
 
         // Log final state of keywords
-        console.log(keywords);
+        // console.log(keywords);
     });
 
     //Add a reaction to reactionbot 
@@ -145,27 +145,7 @@ module.exports = function(controller) {
         }
     });
 
-    // Listen for a keyword and post a reaction image if you hear it
-    controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
-                bot.reply(message, {
-                    'username': 'ReactionBot',
-                    'text': '',
-                    'attachments': [
-                        {
-                            'text': '',
-                            'image_url': team_data.triggers[message.match[0]]
-                        }
-                    ]
-                });
-            } else {
-                console.log('Detected word, but could not get reaction from database.');
-                console.log(err);
-            }
-        });
-    });
-
+    // List command
     controller.hears('^list', 'direct_message,direct_mention', function(bot, message){
         controller.storage.teams.all((err, all_team_data) => {
             if(!err){
@@ -175,7 +155,7 @@ module.exports = function(controller) {
                 let team = all_team_data.find(team => team.id === message.team);
                 console.log("Team Name: " + team);
                 if(team && team.triggers){
-                    let trigger_list = Object.keys(team.triggers);
+                    let trigger_list = Object.keys(team.triggers).sort();
                     let response = trigger_list.reduce((accumulator, value) => {
                         return accumulator + value + "\n";
                     }, "Trigger word list: \n ```");
@@ -191,6 +171,69 @@ module.exports = function(controller) {
             }
         });
     });
+
+    // Help command
+    controller.hears('^help', 'direct_message,direct_mention', function(bot, message){
+        let version = process.env.VERSION || ""                                             
+        let help_message = `ReactionBot ${version}                                             
+COMMANDS:                                                                       
+*add <trigger> <image_url>* => Tell ReactionBot to react to a word or sentence you say
+*remove <trigger>*\t\t\t\t => Tell ReactionBot to stop listening to a trigger   
+*get <trigger>*\t\t\t\t\t\t=> Ask ReactionBot to show an image for a trigger    
+*list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger sentences Reactionbot is listening for
+*help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
+` 
+        bot.reply(message, help_message);
+    });
+
+    // Listen for a keyword and post a reaction image if you hear it
+    controller.hears(keywords, 'ambient', function(bot, message) {
+        controller.storage.teams.get(message.team, (err, team_data) => {
+            if(!err){
+                bot.reply(message, {
+                    'username': 'ReactionBot',
+                    'text': '',
+                    'attachments': [
+                        {
+                            'text': '',
+                            'image_url': team_data.triggers[message.match[0]]
+                        }
+                    ]
+                });
+            } else {
+                console.log('Detected word, but could not get reaction from database or reaction belongs to different team');
+                console.log(err);
+            }
+        });
+    });
+
+    // Uploading reactions to reactionbot
+    // require("fs").readFile("./reactions.txt", "utf8", (err, data) => {
+    //     // Team ID: T4EHZ995K
+    //     // Regex: /^(.*) (.*)/g
+    //     controller.storage.teams.get("T4EHZ995K", function(err, team_data){
+    //         if(!err){
+    //             team_data.triggers = team_data.triggers || {}; //Create a new triggers obj if it doesnt exist
+    //             console.log("Data: ");
+    //             console.log(data);
+    //             data.split("\n").forEach((element) => {
+    //                 if(element){
+    //                     let match = /^(.*) (.*)$/g.exec(element);
+    //                     console.log("Element: " + element);
+    //                     console.log(match);
+    //                     team_data.triggers[match[1]] = match[2];
+    //                 } else {
+    //                     console.log("Reached the end of file I think");
+    //                 }
+    //             });
+    //             console.log("The length of data is: " + data.split("\n").length);
+    //             // Save new team_data in database
+    //             controller.storage.teams.save(team_data, function(err){
+    //                 console.log(err);
+    //             });
+    //         }
+    //     });
+    // });
 
     /***************************************************************************/
     //TODO: Removing HTML characters?
