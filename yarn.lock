@@ -376,9 +376,9 @@ botbuilder@^3.2.3:
     sprintf-js "^1.0.3"
     url-join "^1.1.0"
 
-botkit-storage-postgres@^0.1.0:
+botkit-storage-postgres@fluidly/botkit-storage-postgres:
   version "0.1.0"
-  resolved "https://registry.yarnpkg.com/botkit-storage-postgres/-/botkit-storage-postgres-0.1.0.tgz#e7435b6a6dc83e575a4e7811e1c32be1f568cdfd"
+  resolved "https://codeload.github.com/fluidly/botkit-storage-postgres/tar.gz/029c28b275108a5b4e6e3845382056f2dc3c0db1"
   dependencies:
     co "^4.6.0"
     pg "^6.1.0"
@@ -390,7 +390,7 @@ botkit-studio-sdk@^1.0.0:
     promise "^7.1.1"
     request "^2.67.0"
 
-botkit@^0.5:
+botkit@^0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/botkit/-/botkit-0.5.2.tgz#4be4261cbdd81ba70d7dab225864c87d6bb4ad81"
   dependencies:
@@ -1160,11 +1160,11 @@ lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
 
-lodash@4.12.0:
+lodash@4.12.0, lodash@^4.6.1:
   version "4.12.0"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.12.0.tgz#2bd6dc46a040f59e686c972ed21d93dc59053258"
 
-lodash@^4.11.1, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.6.1:
+lodash@^4.11.1, lodash@^4.14.0, lodash@^4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -1933,10 +1933,6 @@ webrtc-adapter@^3.2.0:
 window-size@^0.1.2:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.4.tgz#f8e1aa1ee5a53ec5bf151ffa09742a6ad7697876"
-
-wordfilter@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/wordfilter/-/wordfilter-0.2.6.tgz#de41ac634aa994b9f1bb938c1ccbbcde49641465"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"
