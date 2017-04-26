@@ -173,8 +173,9 @@ module.exports = function(controller) {
                 console.log(all_team_data);
 
                 let team = all_team_data.find(team => team.id === message.team);
+                console.log("Team Name: " + team);
                 if(team && team.triggers){
-                    let trigger_list = Object.keys(all_team_data[message.team].triggers);
+                    let trigger_list = Object.keys(team.triggers);
                     let response = trigger_list.reduce((accumulator, value) => {
                         return accumulator + value + "\n";
                     }, "Trigger word list: \n ```");
