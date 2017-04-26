@@ -68,18 +68,20 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 controller.log.info("Running ReactionBot...");
 
 function database_config(uri){
-    let regex = /^postgres:\/\/(\S+):(\S+)@(\S+)\/(\S+)$/g;
+    //let regex = /^postgres:\/\/(\S+):(\S+)@(\S+)\/(\S+)$/g;
+    let regex = /^postgres:\/\/(\S+):(\S+)@(\S+):(\d+)\/(\S+)$/g;
     let match = regex.exec(uri);
 
     console.log("URI: " + uri)
     console.log(match);
 
-    if(match[4]){
+    if(match[5]){
         let obj = {
             user: match[1],
             password: match[2],
             host: match[3],
-            database: match[4]
+            port: match[4],
+            database: match[5]
         };
         return obj;
     }  
