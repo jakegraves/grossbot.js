@@ -177,11 +177,14 @@ module.exports = function(controller) {
         let version = process.env.VERSION || ""                                             
         let help_message = `ReactionBot ${version}                                             
 COMMANDS:                                                                       
-*add <trigger> <image_url>* => Tell ReactionBot to react to a word or sentence you say
-*remove <trigger>*\t\t\t\t => Tell ReactionBot to stop listening to a trigger   
-*get <trigger>*\t\t\t\t\t\t=> Ask ReactionBot to show an image for a trigger    
-*list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger sentences Reactionbot is listening for
+*add <trigger> <image_url>* => Tell ReactionBot to react to any text you say with an image from <image_url>
+*remove <trigger>*\t\t\t\t => Tell ReactionBot to stop listening to a <trigger> word  
+*get <trigger>*\t\t\t\t\t\t=> Ask ReactionBot to show an image for a <trigger> word   
+*list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger words Reactionbot is listening for
 *help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
+
+Have a feature request, bug report, or general inquiry? Please contact us here:
+https://reactionbot-js.herokuapp.com/contact.html
 ` 
         bot.reply(message, help_message);
     });

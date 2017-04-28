@@ -13,11 +13,13 @@ module.exports = function(controller) {
     // import express middlewares that are present in /components/express_middleware
     var normalizedPath = require("path").join(__dirname, "express_middleware");
     require("fs").readdirSync(normalizedPath).forEach(function(file) {
-        require("./express_middleware/" + file)(webserver, controller);
+        if(file.endsWith('.js') && !file.startsWith('.#')){
+            require("./express_middleware/" + file)(webserver, controller);
+        }
     });
 
+    // import static webpages
     webserver.use(express.static('public'));
-
 
     webserver.listen(process.env.PORT || 3000, null, function() {
 
