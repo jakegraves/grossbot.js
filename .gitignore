@@ -1,6 +1,7 @@
 .db
 .env
 .prodenv
+.DS_Store
 .#*
 node_modules
 components/routes/_*
