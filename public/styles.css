@@ -10,6 +10,19 @@ a {
     color: #0741DD;
 }
 
+p {
+    margin:0 auto 20px;
+    max-width:400px;
+}
+
+body {
+    font: 16px monospace; 
+}
+
+.demo {
+    height: 450px;
+}
+
 .button {
     display: block;
 }
