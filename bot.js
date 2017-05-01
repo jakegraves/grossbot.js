@@ -22,7 +22,7 @@ var controller = Botkit.slackbot({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     debug: true,
-    scopes: ['bot', 'commands', 'channels:history', 'groups:history', 'im:history', 'mpim:history'],
+    scopes: ['bot'],
     studio_token: process.env.STUDIO_TOKEN,
     studio_command_uri: process.env.studio_command_uri,
     //json_file_store: __dirname + '/.db/' // store user data in a simple JSON format
