@@ -192,7 +192,7 @@ https://reactionbot-js.herokuapp.com/contact.html
     // Listen for a keyword and post a reaction image if you hear it
     controller.hears(keywords, 'ambient', function(bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
+            if(!err && team_data && team_data.triggers[message.match[0]]){
                 bot.reply(message, {
                     'username': 'ReactionBot',
                     'text': '',
