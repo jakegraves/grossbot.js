@@ -2,22 +2,40 @@
 
 module.exports = function(controller) {
 
-    //TODO: Use more than just the team table
-
-    // Each list of triggers for a certain entity (either a user, channel,
-    // or team) is stored in the database as so:
-    // {
-    //     "id": "ENTITY_ID",
-    //     "triggers": {
-    //         'foo': 'bar.com/pic1.jpg',
-    //         'memes': 'dreams.jpg',
-    //         ':reaction:': 'bigger-reaction.jpg'
-    //     }
-    // }
-
     // To allow for easy manipulation of trigger words, we then get only the keys
     // and put it into an array
-    var keywords = [];
+    var keywords = ["abort",  "absorb", "abuse",  "going down", "aching", "achy", 
+    "moist", "coming", "come", "ahead", "flaccid", "coitus", "juice",
+    "flat",     "patties",    "dollop",    "pudding",    "nog",    "putty",    "veiny",
+    "secretion",    "secrete",    "curd",    "sack",    "raunchy",    "squat", 
+    "thrust",    "low-hanging",    "low hanging",    "fruit",    "swab",    "fudge",
+    "fudging", "eat it", "eat me",    "acquaint",    "teeming",    "clench",
+    "smear",    "elbow grease",    "elbow-grease",    "grease",    "acquainting",
+    "penetrate",    "penetration",    "grab",    "hunker",    "smear",    "privy",
+    "staunch",    "loaf",    "tinkle",    "squelch",    "quench",    "tinker",
+    "ointment",    "salve",    "panties",    "panty",    "groin",    "cranny",
+    "nook",    "crotch",    "wimple",    "mulch",    "munch",    "follicle",
+    "fanny",    "follicle",    "plow",    "chisel",    "slam dunk",    "jingle",
+    "custard",    "man-cust",    "mancust",    "man-pats",    "manpats",
+    "eatery",    "sippie cup",    "clam",    "muzzle",    "fresh",
+    "pickle",    "funnel",    "fuddrucker",    "dig in",    "packet",
+    "sloppy",    "slop bucket",    "soothing",    "milk",    "butter",
+    "teat",    "turgid",    "cozy",    "cougar",    "nuzzle",    "hot meal",
+    "patty",    "scrot",    "jock itch",    "bladder",    "wipe",    "scabies",
+    "phlegm",    "borscht",    "plug",    "hard",    "soft",    "private",
+    "public",    "grab",    "on it",    "merge",    "commit",    "pull request",
+    "pull-request",    "put it in",     "tldr",    "leave early",    "late",
+    "put in",    "semen",    "squirt"];
+
+    var responses = [
+        "Gross.",
+        "Sick.",
+        "Gross!",
+        "Heh.",
+        "That's what she said? Gross.",
+        "Eww.",
+        "Ugh."
+    ]
 
     //TODO: Create different handlers for each team instead of handling all of them in these handlers here
 
@@ -26,7 +44,7 @@ module.exports = function(controller) {
         if(!err){
             all_team_data.forEach((team_data) => {
                 if(team_data.triggers){
-                    let team_triggers = Object.keys(team_data.triggers);
+                    let team_triggers = team_data.triggers;
                     team_triggers.forEach((trigger) => {
                         // I'm directly mutating keywords cause Javascript is pass by a COPY of a reference
                         keywords.push(trigger); 
@@ -44,21 +62,18 @@ module.exports = function(controller) {
     });
 
     //Add a reaction to reactionbot 
-    controller.hears('^add (.*) (.*)', 'direct_message,direct_mention', function(bot, message) {
+    controller.hears('^add (.*)', 'direct_message,direct_mention', function(bot, message) {
         let trigger = message.match[1];
-        let reaction = message.match[2];
-
-        reaction = extract_url(reaction); 
 
         //TODO: Right now I'm making the assumption that reaction is an image.
 
-        if (trigger && reaction){
-            bot.reply(message, "Sure, I'll react to  \"" + trigger + "\" with \"" + reaction + "\" now :grinning:"); 
+        if (trigger && responses.indexOf(trigger)===-1){
+            bot.reply(message, "You're right, \"" + trigger + "\" is a pretty gross word."); 
 
             controller.storage.teams.get(message.team, function(err, team_data){
                 if(!err){
-                    team_data.triggers = team_data.triggers || {}; //Create a new triggers obj if it doesnt exist
-                    team_data.triggers[trigger] = reaction;
+                    team_data.triggers = team_data.triggers || []; //Create a new triggers obj if it doesnt exist
+                    team_data.triggers.push(trigger);
                    
                     // Save new team_data in database
                     controller.storage.teams.save(team_data, function(err){
@@ -72,9 +87,7 @@ module.exports = function(controller) {
                     // Save new team_data in database
                     controller.storage.teams.save({
                         id: message.team,
-                        triggers: {
-                            [trigger]: reaction
-                        }
+                        triggers: [trigger]
                     }, (err) => {
                         console.log(err);
                     });
@@ -86,7 +99,7 @@ module.exports = function(controller) {
                 }
             });
         } else {
-            bot.reply(message, "I didn't understand you sorry :disappointed:. I need a WORD to react to and a REACTION to react with");
+            bot.reply(message, "Stop trying to create an infinite loop!");
         }
     });
     
@@ -97,14 +110,16 @@ module.exports = function(controller) {
             // Remove from db (actually just another add that overwrites)
             controller.storage.teams.get(message.team, function(err, team_data){
                 if(!err){
-                    if (team_data.triggers && delete team_data.triggers[trigger]){
+                    if (team_data.triggers){
+                        var index = team_data.triggers.indexOf(trigger);
+                        team_data.triggers.splice(index, 1);
                         // Save changed team_data in database
                         controller.storage.teams.save(team_data, function(err){
                             console.log(err);
                         });
-                        bot.reply(message, "I removed the reaction for " + trigger + "!");
+                        bot.reply(message, "I removed the word " + trigger + ".");
                     } else {
-                        bot.reply(message, "I don't think that reaction exists!");
+                        bot.reply(message, "That word doesn't exist.");
                     }
                 } else {
                     console.log(err); 
@@ -120,31 +135,6 @@ module.exports = function(controller) {
         }
     });
 
-    //Get command
-    controller.hears('^get (.*)', 'direct_message,direct_mention', function(bot, message){
-        if (trigger = message.match[1]){
-            controller.storage.teams.get(message.team, (err, team_data) => {
-                if(!err && team_data.triggers && team_data.triggers[trigger]){
-                    bot.reply(message, {
-                        'username': 'ReactionBot',
-                        'text': '',
-                        'attachments': [
-                            {
-                                'text': '',
-                                'image_url': team_data.triggers[trigger]
-                            }
-                        ]
-                    });
-                } else {
-                    bot.reply("I don't think that reaction exists!");
-                    console.log(err);
-                }
-            });
-        } else{
-            bot.reply(message, "I don't think you gave me a reaction to try to get!");
-        }
-    });
-
     // List command
     controller.hears('^list', 'direct_message,direct_mention', function(bot, message){
         controller.storage.teams.all((err, all_team_data) => {
@@ -155,7 +145,7 @@ module.exports = function(controller) {
                 let team = all_team_data.find(team => team.id === message.team);
                 console.log("Team Name: " + team);
                 if(team && team.triggers){
-                    let trigger_list = Object.keys(team.triggers).sort();
+                    let trigger_list = team.triggers.sort();
                     let response = trigger_list.reduce((accumulator, value) => {
                         return accumulator + value + "\n";
                     }, "Trigger word list: \n ```");
@@ -175,12 +165,11 @@ module.exports = function(controller) {
     // Help command
     controller.hears('^help', 'direct_message,direct_mention', function(bot, message){
         let version = process.env.VERSION || ""                                             
-        let help_message = `ReactionBot ${version}                                             
+        let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
-*add <trigger> <image_url>* => Tell ReactionBot to react to any text you say with an image from <image_url>
-*remove <trigger>*\t\t\t\t => Tell ReactionBot to stop listening to a <trigger> word  
-*get <trigger>*\t\t\t\t\t\t=> Ask ReactionBot to show an image for a <trigger> word   
-*list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger words Reactionbot is listening for
+*add <trigger>* => Tell GrossBot to react to any text you give.
+*remove <trigger>*\t\t\t\t => Tell GrossBot to stop listening to a <trigger> word  
+*list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger phrases GrossBot is listening for
 *help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
 
 Have a feature request, bug report, or general inquiry? Please contact us here:
@@ -189,61 +178,21 @@ https://reactionbot-js.herokuapp.com/contact.html
         bot.reply(message, help_message);
     });
 
-    // Listen for a keyword and post a reaction image if you hear it
+    // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient', function(bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
             if(!err && team_data && team_data.triggers[message.match[0]]){
                 bot.reply(message, {
-                    'username': 'ReactionBot',
-                    'text': '',
-                    'attachments': [
-                        {
-                            'text': '',
-                            'image_url': team_data.triggers[message.match[0]]
-                        }
-                    ]
+                    'username': 'GrossBot',
+                    'text': selectResponse(),
                 });
             } else {
-                console.log('Detected word, but could not get reaction from database or reaction belongs to different team');
                 console.log(err);
             }
         });
     });
 
-    // Uploading reactions to reactionbot
-    // require("fs").readFile("./reactions.txt", "utf8", (err, data) => {
-    //     // Team ID: T4EHZ995K
-    //     // Regex: /^(.*) (.*)/g
-    //     controller.storage.teams.get("T4EHZ995K", function(err, team_data){
-    //         if(!err){
-    //             team_data.triggers = team_data.triggers || {}; //Create a new triggers obj if it doesnt exist
-    //             console.log("Data: ");
-    //             console.log(data);
-    //             data.split("\n").forEach((element) => {
-    //                 if(element){
-    //                     let match = /^(.*) (.*)$/g.exec(element);
-    //                     console.log("Element: " + element);
-    //                     console.log(match);
-    //                     team_data.triggers[match[1]] = match[2];
-    //                 } else {
-    //                     console.log("Reached the end of file I think");
-    //                 }
-    //             });
-    //             console.log("The length of data is: " + data.split("\n").length);
-    //             // Save new team_data in database
-    //             controller.storage.teams.save(team_data, function(err){
-    //                 console.log(err);
-    //             });
-    //         }
-    //     });
-    // });
-
-    /***************************************************************************/
-    //TODO: Removing HTML characters?
-    function extract_url(text){
-        let match = /<([^>\|]+)(?:\|([^>]+))?>/g.exec(text);
-        if(url = match[1]){
-            return decodeURIComponent(url) // Remove percent encoding 
-        }
+    function selectResponse(){
+        return responses[Math.floor(Math.random() * responses.length)];
     }
 };
