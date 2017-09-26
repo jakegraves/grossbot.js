@@ -164,8 +164,25 @@ module.exports = function(controller) {
         });
     });
 
+    controller.hears('^explain (.*)', 'direct_message, direct_mention', function(bot, message){
+        var _ = require('lodash');
+        var sentence = message.match[1].toLowerCase();
+        var offendingWords = _.filter(keywords, function(word){
+            return sentence.indexOf(word) > -1;
+        });
+        
+        let list = keywords.sort();
+        let response = filter.reduce((accumulator, value) => {
+                        return accumulator + value + ", ";
+            }, "You used these words:");
+        response += " and that's gross."; 
+
+        bot.reply(message, response);
+                
+    });
+
     // Help command
-    controller.hears('^help', 'direct_message,direct_mention', function(bot, message){
+    controller.hears('^help', 'direct_message, direct_mention', function(bot, message){
         let version = process.env.VERSION || ""                                             
         let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
@@ -200,20 +217,5 @@ https://hashidevgross.herokuapp.com/contact.html
         return responses[Math.floor(Math.random() * responses.length)];
     }
 
-    controller.hears('^explain (.*)', 'direct_message, direct_mention', function(bot, message){
-        var _ = require('lodash');
-        var sentence = message.match[1].toLowerCase();
-        var offendingWords = _.filter(keywords, function(word){
-            return sentence.indexOf(word) > -1;
-        });
-        
-        let list = keywords.sort();
-        let response = filter.reduce((accumulator, value) => {
-                        return accumulator + value + ", ";
-            }, "You used these words:");
-        response += " and that's gross."; 
-
-        bot.reply(message, response);
-                
-    });
+    
 };
