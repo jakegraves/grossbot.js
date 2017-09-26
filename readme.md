@@ -1,3 +1,3 @@
-# ReactionBot
+# GrossBot
 
-See [here](https://reactionbot-js.herokuapp.com/) for installation
+See [here](https://grossbot.herokuapp.com/) for installation
