@@ -11,11 +11,7 @@ if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT ||
 
 var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
-var pg = require('pg');
 var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.DATABASE_URL, tables: ['triggers']});
-
-// Setup postgres SSL for Heroku
-pg.defaults.ssl = true;
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot({
