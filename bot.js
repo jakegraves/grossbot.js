@@ -6,13 +6,13 @@ env.config();
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT || !process.env.DATABASE_URL) {
     console.log('Error: Specify CLIENT_ID, CLIENT_SECRET, DATABASE_URL and PORT in environment');
-    //process.exit(1);
+    process.exit(1);
 }
 
 var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
 var pg = require('pg');
-var storage = require('botkit-storage-postgres');
+var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.DATABASE_URL, tables: ['triggers']});
 
 // Setup postgres SSL for Heroku
 pg.defaults.ssl = true;
@@ -26,7 +26,7 @@ var controller = Botkit.slackbot({
     studio_token: process.env.STUDIO_TOKEN,
     //studio_command_uri: process.env.studio_command_uri,
     //json_file_store: __dirname + '/.db/' // store user data in a simple JSON format
-    storage: storage(database_config(process.env.DATABASE_URL))
+    storage: mongoStorage
 });
 
 controller.startTicking();
