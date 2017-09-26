@@ -170,11 +170,20 @@ module.exports = function(controller) {
         var offendingWords = _.filter(keywords, function(word){
             return sentence.indexOf(word) > -1;
         });
-        
-        let response = offendingWords.reduce((accumulator, value) => {
-            return accumulator + value + ", ";
-        }, "You said:");
-        response += "and that's gross."; 
+        let response;
+        if(offendingWords.length === 0){
+            response = "Looks clean to me.";        
+        }else{
+            response = offendingWords.reduce((accumulator, value) => {
+                return accumulator + value + "\", ";
+            }, "I called that message out because, \"");
+    
+            if(offendingWords.length>1){
+                response += " was typed out and that's gross."; 
+            } else{
+                response += " were typed out and it's super gross.";             
+            }
+        }
 
         bot.reply(message, response);
                 
