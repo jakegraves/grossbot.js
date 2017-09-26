@@ -171,11 +171,10 @@ module.exports = function(controller) {
             return sentence.indexOf(word) > -1;
         });
         
-        let list = keywords.sort();
-        let response = filter.reduce((accumulator, value) => {
-                        return accumulator + value + ", ";
-            }, "You used these words:");
-        response += " and that's gross."; 
+        let response = offendingWords.reduce((accumulator, value) => {
+            return accumulator + value + ", ";
+        }, "You said:");
+        response += "and that's gross."; 
 
         bot.reply(message, response);
                 
