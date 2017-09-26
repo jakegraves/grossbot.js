@@ -181,7 +181,7 @@ https://hashidevgross.herokuapp.com/contact.html
     });
 
     // Listen for a keyword and post a reaction
-    controller.hears(keywords, 'ambient', function(bot, message) {
+    controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
         //console.debug(bot);
         //console.debug(message);
         //controller.storage.teams.get(message.team, (err, team_data) => {
