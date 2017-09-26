@@ -147,7 +147,7 @@ module.exports = function(controller) {
                 let team = all_team_data.find(team => team.id === message.team);
                 console.log("Team Name: " + team);
                 if(team && team.triggers){
-                    let trigger_list = team.triggers.sort();
+                    let trigger_list = keywords.sort();
                     let response = trigger_list.reduce((accumulator, value) => {
                         return accumulator + value + "\n";
                     }, "Trigger word list: \n ```");
@@ -169,7 +169,7 @@ module.exports = function(controller) {
         let version = process.env.VERSION || ""                                             
         let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
-*add <trigger>*\t\t\t\t\t => Tell GrossBot to react to any text you give.
+*add <trigger>*\t\t\t\t\t  => Tell GrossBot to react to any text you give.
 *remove <trigger>*\t\t\t\t => Tell GrossBot to stop listening to a <trigger> word  
 *list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger phrases GrossBot is listening for
 *help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
