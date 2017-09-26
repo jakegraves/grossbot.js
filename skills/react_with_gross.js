@@ -182,18 +182,18 @@ https://reactionbot-js.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient', function(bot, message) {
-        console.debug(bot);
-        console.debug(message);
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
+        //console.debug(bot);
+        //console.debug(message);
+        //controller.storage.teams.get(message.team, (err, team_data) => {
+        //    if(!err){
                 bot.reply(message, {
                     'username': 'GrossBot',
                     'text': selectResponse(),
                 });
-            } else {
-                console.log(err);
-            }
-        });
+        //    } else {
+        //        console.log(err);
+        //    }
+        //});
     });
 
     function selectResponse(){
