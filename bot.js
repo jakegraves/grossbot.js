@@ -6,7 +6,7 @@ env.config();
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT || !process.env.DATABASE_URL) {
     console.log('Error: Specify CLIENT_ID, CLIENT_SECRET, DATABASE_URL and PORT in environment');
-    process.exit(1);
+    //process.exit(1);
 }
 
 var Botkit = require('botkit');
