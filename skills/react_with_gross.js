@@ -175,7 +175,7 @@ COMMANDS:
 *help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
 
 Have a feature request, bug report, or general inquiry? Please contact us here:
-https://reactionbot-js.herokuapp.com/contact.html
+https://hashidevgross.herokuapp.com/contact.html
 ` 
         bot.reply(message, help_message);
     });
