@@ -169,7 +169,7 @@ module.exports = function(controller) {
         let version = process.env.VERSION || ""                                             
         let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
-*add <trigger>* => Tell GrossBot to react to any text you give.
+*add <trigger>*\t\t\t\t\t => Tell GrossBot to react to any text you give.
 *remove <trigger>*\t\t\t\t => Tell GrossBot to stop listening to a <trigger> word  
 *list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger phrases GrossBot is listening for
 *help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
@@ -185,7 +185,7 @@ https://reactionbot-js.herokuapp.com/contact.html
         console.debug(bot);
         console.debug(message);
         controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err && team_data && team_data.triggers[message.match[0]]){
+            if(!err){
                 bot.reply(message, {
                     'username': 'GrossBot',
                     'text': selectResponse(),
