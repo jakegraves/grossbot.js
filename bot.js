@@ -65,7 +65,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 
 
 // Show we're running
-controller.log.info("Running ReactionBot...");
+controller.log.info("Running GrossBot...");
 
 function database_config(uri){
     //let regex = /^postgres:\/\/(\S+):(\S+)@(\S+)\/(\S+)$/g;

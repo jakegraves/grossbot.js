@@ -1,7 +1,7 @@
 {
-  "name": "Reaction Bot",
-  "description": "A Slack bot that likes to react to what you say",
-  "repository": "https://github.com/richardshi97/reactionbot.js",
+  "name": "Gross Bot",
+  "description": "A Slack bot that points out how gross you are",
+  "repository": "https://github.com/jakegraves/grossbot.js",
   "keywords": ["node", "bots", "slack","botkit"],
   "website": "https://studio.botkit.ai/",
   "success_url":"/",
