@@ -71,8 +71,8 @@ module.exports = function(controller) {
             bot.reply(message, "You're right, \"" + trigger + "\" is a pretty gross word."); 
 
             controller.storage.teams.get(message.team, function(err, team_data){
-                console.debug(err)
-                console.debug(team_data)
+                //console.debug(err)
+                //console.debug(team_data)
                 if(!err){
                     team_data.triggers = team_data.triggers || []; //Create a new triggers obj if it doesnt exist
                     team_data.triggers.push(trigger);
