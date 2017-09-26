@@ -195,7 +195,8 @@ module.exports = function(controller) {
         let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
 *add <trigger>*\t\t\t\t\t\t  => Tell GrossBot to react to any text you give.
-*remove <trigger>*\t\t\t\t => Tell GrossBot to stop listening to a <trigger> word  
+*remove <trigger>*\t\t\t\t => Tell GrossBot to stop listening to a <trigger> word
+*explain <message>*\t\t\t => Ask GrossBot why a message was called out as "gross".  
 *list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger phrases GrossBot is listening for
 *help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
 
