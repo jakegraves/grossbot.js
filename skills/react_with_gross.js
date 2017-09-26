@@ -175,13 +175,13 @@ module.exports = function(controller) {
             response = "Looks clean to me.";        
         }else{
             response = offendingWords.reduce((accumulator, value) => {
-                return accumulator + value + "\", ";
-            }, "I called that message out because \"");
+                return accumulator + "\"" + value + "\", ";
+            }, "I called that message out because");
     
             if(offendingWords.length === 1){
-                response = response.replace(",","") + " was typed out and that's gross."; 
+                response = response.replace(",","") + "was typed out and that's gross."; 
             } else{
-                response += " were typed out and it's super gross.";             
+                response += "were typed out and it's super gross.";             
             }
         }
 
