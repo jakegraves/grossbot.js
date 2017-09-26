@@ -179,7 +179,7 @@ module.exports = function(controller) {
             }, "I called that message out because \"");
     
             if(offendingWords.length === 1){
-                response += " was typed out and that's gross."; 
+                response = response.replace(",","") + " was typed out and that's gross."; 
             } else{
                 response += " were typed out and it's super gross.";             
             }
