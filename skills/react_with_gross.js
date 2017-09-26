@@ -30,6 +30,9 @@ module.exports = function(controller) {
         "Phrasing!",
         ":grimacing:",
         ":point_up_2:",
+        "http://replygif.net/i/132.gif",
+        "http://replygif.net/i/131.gif",
+        ":gross:"
     ]
 
     //TODO: Create different handlers for each team instead of handling all of them in these handlers here
