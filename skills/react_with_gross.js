@@ -68,7 +68,7 @@ module.exports = function(controller) {
         //TODO: Right now I'm making the assumption that reaction is an image.
 
         if (trigger && responses.indexOf(trigger)===-1){
-            bot.reply(message, "You're right, \"" + trigger + "\" is a pretty gross word."); 
+            bot.reply(message, "You're right, \"" + trigger + "\" is pretty gross."); 
 
             controller.storage.teams.get(message.team, function(err, team_data){
                 //console.debug(err)
