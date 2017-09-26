@@ -24,8 +24,8 @@ module.exports = function(controller) {
     "patty",    "scrot",    "jock itch",    "bladder",    "wipe",    "scabies",
     "phlegm",    "borscht",    "plug",    "hard",    "soft",    "private",
     "public",    "grab",    "on it",    "merge",    "commit",    "pull request",
-    "pull-request",    "put it in",     "tldr",    "leave early",    "late",
-    "put in",    "semen",    "squirt"];
+    "pull-request", "put it in",     "tldr",    "leave early",    "late",
+    "put in", "semen", "squirt"];
 
     var responses = [
         "Gross.",
@@ -34,7 +34,13 @@ module.exports = function(controller) {
         "Heh.",
         "That's what she said? Gross.",
         "Eww.",
-        "Ugh."
+        "Ugh.",
+        "...",
+        "...phrasing.",
+        "Uh, phrasing.",
+        "Phrasing!",
+        ":grimacing:",
+        ":point_up_2:",
     ]
 
     //TODO: Create different handlers for each team instead of handling all of them in these handlers here
