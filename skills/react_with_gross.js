@@ -193,7 +193,7 @@ module.exports = function(controller) {
         bot.reply(message, "To call you gross. I'm not programmed for friendship.");
     });
 
-    controller.hears('^sleep', 'direct_message,direct_mention', function(bot, message){
+    controller.hears('^sleep', 'direct_mention', function(bot, message){
         controller.storage.teams.get(message.team, function(err, team_data){
             if(!err){
                 sleepCommand(team_data, message.channel);
