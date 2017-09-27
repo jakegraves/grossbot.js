@@ -207,11 +207,7 @@ module.exports = function(controller) {
     controller.hears("^don't be gross", 'direct_message,direct_mention', function(bot, message){
         controller.storage.teams.all((err, all_team_data) => {
             if(!err){
-                controller.log.info(JSON.stringify(message));
-                controller.log.info(JSON.stringify(all_team_data));
                 let team_data = all_team_data.find(team => team.id === message.team);
-                controller.log.info("User:");
-                controller.log.info(message.user);
                 sleepCommand(team_data, message.user);
                 bot.reply(message, "Okay, I won't respond to your messages for an hour.");
             } else {
