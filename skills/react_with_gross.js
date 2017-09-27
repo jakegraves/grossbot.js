@@ -189,6 +189,10 @@ module.exports = function(controller) {
                 
     });
 
+    controller.hears('^what is your purpose?', 'direct_message,direct_mention', function(bot, message){
+        bot.reply(message, "To call you gross. I'm not programmed for friendship.");
+    });
+
     // Help command
     controller.hears('^help', 'direct_message, direct_mention', function(bot, message){
         let version = process.env.VERSION || ""                                             
