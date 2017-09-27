@@ -270,13 +270,11 @@ https://hashidevgross.herokuapp.com/contact.html
                 if(team_data.sleep[message.channel]){
                     let channelSleepTime = new Date(team_data.sleep[message.channel]);
                     canBeGross = now.getTime() > channelSleepTime.getTime();
-                    controller.log.info(canBeGross, "=", now.getTime(), ">", channelSleepTime.getTime());
                 }
 
                 if(team_data.sleep[message.user]){
                     let userSleepTime = new Date(team_data.sleep[message.user]);
                     canBeGross = now.getTime() > userSleepTime.getTime();
-                    controller.log.info(canBeGross, "=", now.getTime(), ">", userSleepTime.getTime());
                 }
                 
                 if(canBeGross === true){
