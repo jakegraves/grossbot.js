@@ -59,7 +59,7 @@ module.exports = function(controller) {
         // console.log(keywords);
     });
 
-    //Add a reaction to reactionbot 
+    //Add a reaction to grossbot. 
     controller.hears('^add (.*)', 'direct_message,direct_mention', function(bot, message) {
         let trigger = message.match[1];
 
