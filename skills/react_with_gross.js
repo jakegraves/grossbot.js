@@ -285,7 +285,7 @@ https://hashidevgross.herokuapp.com/contact.html
                     controller.log.info(canBeGross, "=", now.getMilliseconds(), ">", userSleepTime.getMilliseconds());
                 }
                 
-                if(canBeGross){
+                if(canBeGross === true){
                     bot.reply(message, {
                         'username': 'GrossBot',
                         'text': selectResponse(),
