@@ -11,11 +11,7 @@ if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT ||
 
 var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
-var pg = require('pg');
-var storage = require('botkit-storage-postgres');
-
-// Setup postgres SSL for Heroku
-pg.defaults.ssl = true;
+var mongoStorage = require('botkit-storage-mongo')({mongoUri: process.env.DATABASE_URL, tables: ['triggers']});
 
 // Create the Botkit controller, which controls all instances of the bot.
 var controller = Botkit.slackbot({
@@ -24,9 +20,9 @@ var controller = Botkit.slackbot({
     debug: true,
     scopes: ['bot'],
     studio_token: process.env.STUDIO_TOKEN,
-    studio_command_uri: process.env.studio_command_uri,
+    //studio_command_uri: process.env.studio_command_uri,
     //json_file_store: __dirname + '/.db/' // store user data in a simple JSON format
-    storage: storage(database_config(process.env.DATABASE_URL))
+    storage: mongoStorage
 });
 
 controller.startTicking();
@@ -65,7 +61,7 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 
 
 // Show we're running
-controller.log.info("Running ReactionBot...");
+controller.log.info("Running GrossBot...");
 
 function database_config(uri){
     //let regex = /^postgres:\/\/(\S+):(\S+)@(\S+)\/(\S+)$/g;

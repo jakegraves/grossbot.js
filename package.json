@@ -1,7 +1,7 @@
 {
-  "name": "reactionbot.js",
+  "name": "grossbot.js",
   "version": "1.0.0",
-  "description": "A Slack bot that likes to react to you",
+  "description": "A Slack bot that points out how gross you are",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
@@ -9,24 +9,25 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "botkit": "^0.5.2",
-    "botkit-storage-postgres": "fluidly/botkit-storage-postgres",
+    "botkit-storage-mongo": "^1.0.7",
     "dashbot": "0.7.4",
     "debug": "^2.3.3",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
+    "lodash": "^4.17.4",
     "querystring": "^0.2.0",
     "request": "^2.79.0"
   },
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/richardshi97/reactionbot.js"
+    "url": "https://github.com/jakegraves/grossbot.js"
   },
   "keywords": [
     "bots",
     "chatbots",
     "slack"
   ],
-  "author": "mail@richardshi.com",
+  "author": "jake@hashidev.com",
   "license": "MIT"
 }
