@@ -204,17 +204,6 @@ module.exports = function(controller) {
         });        
     });
 
-    controller.hears("^don't be gross", 'direct_message,direct_mention', function(bot, message){
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
-                sleepCommand(team_data, message.user);
-                bot.reply(message, "Okay, I won't respond to your messages for an hour.");
-            } else {
-                console.log(err); 
-            }
-        });        
-    });
-
     controller.hears("^don't be gross tammy", 'direct_message,direct_mention', function(bot, message){
         controller.storage.teams.get(message.team, (err, team_data) => {
             if(!err){
@@ -224,6 +213,17 @@ module.exports = function(controller) {
                 console.log(err); 
             }
         }); 
+    });
+
+    controller.hears("^don't be gross", 'direct_message,direct_mention', function(bot, message){
+        controller.storage.teams.get(message.team, (err, team_data) => {
+            if(!err){
+                sleepCommand(team_data, message.user);
+                bot.reply(message, "Okay, I won't respond to your messages for an hour.");
+            } else {
+                console.log(err); 
+            }
+        });        
     });
 
     function sleepCommand(team_data, entityId) {
