@@ -279,11 +279,15 @@ module.exports = function(controller) {
         let version = process.env.VERSION || ""                                             
         let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
-*add <trigger>*\t\t\t\t\t\t  => Tell GrossBot to react to any text you give.
-*remove <trigger>*\t\t\t\t => Tell GrossBot to stop listening to a <trigger> word
-*explain <message>*\t\t\t => Ask GrossBot why a message was called out as "gross".  
-*list*\t\t\t\t\t\t\t\t\t\t  => Show all the trigger phrases GrossBot is listening for
-*help*\t\t\t\t\t\t\t\t\t   => Show this help message                            
+*add <trigger>*: Tell GrossBot to react to any text you give.
+*remove <trigger>*: Tell GrossBot to stop listening to a <trigger> word
+*explain <message>*: Ask GrossBot why a message was called out as "gross"  
+*list*: Show all the trigger phrases GrossBot is listening for
+*don't be gross*: GrossBot won't listen to you ambiently for an hour
+*gross*: GrossBot will listen to you ambiently
+*sleep*: GrossBot won't comment on the channel for an hour
+*wake up*: GrossBot starts commenting again
+*help*: Show this help message                            
 
 Have a feature request, bug report, or general inquiry? Please contact us here:
 https://hashidevgross.herokuapp.com/contact.html
