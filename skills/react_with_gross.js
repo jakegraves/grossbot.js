@@ -275,7 +275,7 @@ module.exports = function(controller) {
  
 
     // Help command
-    controller.hears('^help', 'direct_message, direct_mention', function(bot, message){
+    controller.hears('^help', 'direct_message,direct_mention', function(bot, message){
         let version = process.env.VERSION || ""                                             
         let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
