@@ -229,11 +229,7 @@ module.exports = function(controller) {
     function sleepCommand(team_data, entityId) {
         team_data.sleep = team_data.sleep || {};
         let sleepUntil = new Date();
-        controller.log.info("sleepUntil before:");
-        controller.log.info(sleepUntil.toISOString())
         sleepUntil.setHours(new Date().getHours()+1);
-        controller.log.info("sleepUntil before:");
-        controller.log.info(sleepUntil.toISOString())
         team_data.sleep[entityId] = sleepUntil.toISOString();
         controller.storage.teams.save(team_data, function(err){
             console.log(err);
