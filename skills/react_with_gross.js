@@ -207,8 +207,8 @@ module.exports = function(controller) {
     controller.hears("^don't be gross", 'direct_message,direct_mention', function(bot, message){
         controller.storage.teams.get(message.team, function(err, team_data){
             if(!err){
-                console.log("User:");
-                console.log(message.user);
+                controller.log.info("User:");
+                controller.log.info(message.user);
                 sleepCommand(team_data, message.user);
                 bot.reply(message, "Okay, I won't respond to your messages for an hour.");
             } else {
@@ -231,11 +231,11 @@ module.exports = function(controller) {
     function sleepCommand(team_data, entityId) {
         team_data.sleep = team_data.sleep || {};
         let sleepUntil = new Date();
-        console.log("sleepUntil before:");
-        console.log(sleepUntil.toISOString())
+        controller.log.info("sleepUntil before:");
+        controller.log.info(sleepUntil.toISOString())
         sleepUntil.setHours(new Date().getHours()+1);
-        console.log("sleepUntil before:");
-        console.log(sleepUntil.toISOString())
+        controller.log.info("sleepUntil before:");
+        controller.log.info(sleepUntil.toISOString())
         team_data.sleep[entityId] = sleepUntil.toISOString();
         controller.storage.teams.save(team_data, function(err){
             console.log(err);
@@ -270,19 +270,19 @@ https://hashidevgross.herokuapp.com/contact.html
             if(!err){
                 let now = new Date();
                 let canBeGross = true;  
-                console.log("Now:");                
-                console.log(now.toISOString());
+                controller.log.info("Now:");                
+                controller.log.info(now.toISOString());
                 
                 if(team_data.sleep[message.channel]){
                     let channelSleepTime = new Date(team_data.sleep[message.channel]);
                     let canBeGross = now.getMilliseconds() > channelSleepTime.getMilliseconds();
-                    console.log(canBeGross, "=", now.getMilliseconds(), ">", channelSleepTime.getMilliseconds());
+                    controller.log.info(canBeGross, "=", now.getMilliseconds(), ">", channelSleepTime.getMilliseconds());
                 }
 
                 if(team_data.sleep[message.user]){
                     let userSleepTime = new Date(team_data.sleep[message.user]);
                     let canBeGross = now.getMilliseconds() > userSleepTime.getMilliseconds();
-                    console.log(canBeGross, "=", now.getMilliseconds(), ">", userSleepTime.getMilliseconds());
+                    controller.log.info(canBeGross, "=", now.getMilliseconds(), ">", userSleepTime.getMilliseconds());
                 }
                 
                 if(canBeGross){
@@ -291,7 +291,7 @@ https://hashidevgross.herokuapp.com/contact.html
                         'text': selectResponse(),
                     });
                 } else{
-                    console.log("I was told to sleep either in channel or by user.")
+                    controller.log.info("I was told to sleep either in channel or by user.")
                 }
             } else {
                 console.log(err);
