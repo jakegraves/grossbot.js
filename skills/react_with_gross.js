@@ -221,8 +221,9 @@ module.exports = function(controller) {
     });
 
     controller.hears("^don't be gross tammy", 'direct_message,direct_mention', function(bot, message){
-        controller.storage.teams.get(message.team, function(err, team_data){
+        controller.storage.teams.all((err, all_team_data) => {
             if(!err){
+                let team_data = all_team_data.find(team => team.id === message.team);                
                 sleepCommand(team_data, message.user);
                 bot.reply(message, "In bird culture, that is what we call a \"dick move\". I'll leave you alone for an hour.");
             } else {
@@ -269,7 +270,8 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
-        controller.storage.teams.get(message.team, (err, team_data) => {
+        controller.storage.teams.all((err, all_team_data) => {
+            let team_data = all_team_data.find(team => team.id === message.team);            
             if(!err){
                 let now = new Date();
                 let canBeGross = true;  
