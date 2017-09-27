@@ -241,7 +241,7 @@ module.exports = function(controller) {
         controller.storage.teams.get(message.team, (err, team_data) => {
             if(!err){
                 awakeCommand(team_data, message.user);
-                bot.reply(message, "I know, right? I'll take over from here.");
+                bot.reply(message, "I know, right? I've got you covered... in gross.");
             } else {
                 console.log(err); 
             }
