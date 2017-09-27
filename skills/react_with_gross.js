@@ -201,7 +201,18 @@ module.exports = function(controller) {
             } else {
                 console.log(err); 
             }
-        });        
+        });
+    });
+
+    controller.hears('^wake up', 'direct_mention', function(bot, message){
+        controller.storage.teams.get(message.team, function(err, team_data){
+            if(!err){
+                awakeCommand(team_data, message.channel);
+                bot.reply(message, "I'm awake! This channel is under my protection. \n ..gross.");
+            } else {
+                console.log(err); 
+            }
+        });
     });
 
     controller.hears("^don't be gross tammy", 'direct_message,direct_mention', function(bot, message){
@@ -226,11 +237,33 @@ module.exports = function(controller) {
         });        
     });
 
+    controller.hears("^gross", 'direct_message,direct_mention', function(bot, message){
+        controller.storage.teams.get(message.team, (err, team_data) => {
+            if(!err){
+                awakeCommand(team_data, message.user);
+                bot.reply(message, "I know, right? I'll take over from here.");
+            } else {
+                console.log(err); 
+            }
+        });        
+    });
+
     function sleepCommand(team_data, entityId) {
         team_data.sleep = team_data.sleep || {};
         let sleepUntil = new Date();
         sleepUntil.setHours(new Date().getHours()+1);
         team_data.sleep[entityId] = sleepUntil.toISOString();
+        controller.storage.teams.save(team_data, function(err){
+            console.log(err);
+            if(err){
+                bot.reply(message, "Something went wrong. Please try again later.");
+            }
+        });
+    }
+
+    function awakeCommand(team_data, entityId) {
+        team_data.sleep = team_data.sleep || {};
+        delete team_data.sleep[entityId];
         controller.storage.teams.save(team_data, function(err){
             console.log(err);
             if(err){
