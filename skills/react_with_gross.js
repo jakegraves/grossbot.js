@@ -113,6 +113,8 @@ module.exports = function(controller) {
                     if (team_data.triggers){
                         var index = team_data.triggers.indexOf(trigger);
                         team_data.triggers.splice(index, 1);
+                        index = keywords.indexOf(trigger);
+                        keywords.splice(index, 1);
                         // Save changed team_data in database
                         controller.storage.teams.save(team_data, function(err){
                             console.log(err);
