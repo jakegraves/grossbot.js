@@ -193,6 +193,54 @@ module.exports = function(controller) {
         bot.reply(message, "To call you gross. I'm not programmed for friendship.");
     });
 
+    controller.hears('^sleep', 'direct_message,direct_mention', function(bot, message){
+        controller.storage.teams.get(message.team, function(err, team_data){
+            if(!err){
+                sleepCommand(team_data, message.channel);
+                bot.reply(message, "Okay, I won't message in this channel for an hour.");
+            } else {
+                console.log(err); 
+            }
+        });        
+    });
+
+    controller.hears("^don't be gross", 'direct_message,direct_mention', function(bot, message){
+        controller.storage.teams.get(message.team, function(err, team_data){
+            if(!err){
+                sleepCommand(team_data, message.user);
+                bot.reply(message, "Okay, I won't respond to your messages for an hour.");
+            } else {
+                console.log(err); 
+            }
+        });        
+    });
+
+    controller.hears("^don't be gross tammy", 'direct_message,direct_mention', function(bot, message){
+        controller.storage.teams.get(message.team, function(err, team_data){
+            if(!err){
+                sleepCommand(team_data, message.user);
+                bot.reply(message, "In bird culture, that is what we call a \"dick move\". I'll leave you alone for an hour.");
+            } else {
+                console.log(err); 
+            }
+        }); 
+    });
+
+    function sleepCommand(team_data, entityId) {
+        team_data.sleep = team_data.sleep || {};
+        let sleepUntil = new Date();
+        sleepUntil.setHours(new Date().getHours()+1);
+        team_data.sleep[entityId] = sleepUntil.toISOString();
+        controller.storage.teams.save(team_data, function(err){
+            console.log(err);
+            if(err){
+                bot.reply(message, "Something went wrong. Please try again later.");
+            }
+        });
+    }
+
+ 
+
     // Help command
     controller.hears('^help', 'direct_message, direct_mention', function(bot, message){
         let version = process.env.VERSION || ""                                             
@@ -212,18 +260,33 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
-        //console.debug(bot);
-        //console.debug(message);
-        //controller.storage.teams.get(message.team, (err, team_data) => {
-        //    if(!err){
-                bot.reply(message, {
-                    'username': 'GrossBot',
-                    'text': selectResponse(),
-                });
-        //    } else {
-        //        console.log(err);
-        //    }
-        //});
+        controller.storage.teams.get(message.team, (err, team_data) => {
+            if(!err){
+                let now = new Date();
+                let canBeGross = true;  
+
+                if(team_data.sleep[message.channel]){
+                    let channelSleepTime = new Date(team_data.sleep[message.channel]);
+                    let canBeGross = now > channelSleepTime;
+                }
+
+                if(team_data.sleep[message.user]){
+                    let userSleepTime = new Date(team_data.sleep[message.user]);
+                    let canBeGross = now > userSleepTime;
+                }
+                
+                if(canBeGross){
+                    bot.reply(message, {
+                        'username': 'GrossBot',
+                        'text': selectResponse(),
+                    });
+                } else{
+                    console.log("I was told to sleep either in channel or by user.")
+                }
+            } else {
+                console.log(err);
+            }
+        });
     });
 
     function selectResponse(){
