@@ -147,7 +147,7 @@ module.exports = function(controller) {
                 if(team && team.triggers){
                     let trigger_list = keywords.sort();
                     let response = trigger_list.reduce((accumulator, value) => {
-                        return accumulator + value + "\n";
+                        return accumulator + value + ",";
                     }, "Trigger word list: \n ```");
                     response += "``` To use any of the above, see help command"; 
 
