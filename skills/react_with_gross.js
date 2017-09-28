@@ -4,18 +4,6 @@ module.exports = function(controller) {
 
     // To allow for easy manipulation of trigger words, we then get only the keys
     // and put it into an array
-    var keywords = ["abort", "absorb", "abuse", "going down", "aching", "achy", "moist", "coming", "come", "ahead", 
-    "flaccid", "coitus", "juice", "flat", "patties", "dollop", "pudding", "nog", "putty", "veiny", "secretion", "secrete", 
-    "curd", "sack", "raunchy", "squat", "thrust", "low-hanging", "low hanging", "fruit", "swab", "fudge", "fudging", "eat it", 
-    "eat me", "acquaint", "teeming", "clench", "smear", "elbow grease", "elbow-grease", "grease", "acquainting", "penetrate", 
-    "penetration", "grab", "hunker", "privy", "staunch", "loaf", "tinkle", "squelch", "quench", "tinker", "ointment", "salve", 
-    "panties", "panty", "groin", "cranny", "nook", "crotch", "wimple", "mulch", "munch", "follicle", "fanny", "plow", "chisel", 
-    "slam dunk", "jingle", "custard", "man-cust", "mancust", "man-pats", "manpats", "eatery", "sippie cup", "clam", "muzzle", 
-    "fresh", "pickle", "funnel", "fuddrucker", "dig in", "packet", "sloppy", "slop bucket", "soothing", "milk", "butter", 
-    "teat", "turgid", "cozy", "cougar", "nuzzle", "hot meal", "patty", "scrot", "jock itch", "bladder", "wipe", "scabies", 
-    "phlegm", "borscht", "plug", "hard", "soft", "private", "public", "on it", "merge", "commit", "pull request", 
-    "pull-request", "put it in", "tldr", "leave early", "late", "put in", "semen", "squirt"];
-
     var responses = [
         "Gross.",
         "Sick.",
@@ -34,6 +22,7 @@ module.exports = function(controller) {
         "http://replygif.net/i/131.gif",
         ":gross:"
     ]
+    var keywords = [];
 
     //TODO: Create different handlers for each team instead of handling all of them in these handlers here
 
