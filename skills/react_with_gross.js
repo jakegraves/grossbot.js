@@ -298,66 +298,66 @@ COMMANDS:
 
 Have a feature request, bug report, or general inquiry? Please contact us here:
 https://hashidevgross.herokuapp.com/contact.html
-` 
+`
         bot.reply(message, help_message);
     });
 
     // Listen for a keyword and post a reaction
-    controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
+    controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
+            if (!err) {
                 let triggers = team_data.triggers;
-                team_data.annoyance = team_data.annoyance || {LevelSet: 1, Current:0};
+                team_data.annoyance = team_data.annoyance || { LevelSet: 1, Current: 0 };
                 let now = new Date();
-                let canBeGross = true;  
-                
-                if(team_data.sleep[message.channel]){
+                let canBeGross = true;
+
+                if (team_data.sleep[message.channel]) {
                     let channelSleepTime = new Date(team_data.sleep[message.channel]);
                     canBeGross = now.getTime() > channelSleepTime.getTime();
                 }
 
-                if(team_data.sleep[message.user]){
+                if (team_data.sleep[message.user]) {
                     let userSleepTime = new Date(team_data.sleep[message.user]);
                     canBeGross = now.getTime() > userSleepTime.getTime();
                 }
-                
-                var offendingWords = _.filter(triggers, function(word){
+
+                var offendingWords = _.filter(triggers, function (word) {
                     return message.text.indexOf(word) > -1;
                 });
-                
+
                 //When printed out, it's nice to have them in order.
-                offendingWords = offendingWords.reverse();
+                offendingWords = _.unique(offendingWords.reverse());
 
-                offendingWords.length ? team_data.annoyance.Current++ : team_data.annoyance.Current +=0;
+                offendingWords.length ? team_data.annoyance.Current++ : team_data.annoyance.Current += 0;
 
-                if(canBeGross && offendingWords.length > 0 && team_data.annoyance.LevelSet <= team_data.annoyance.Current){
-                    team_data.annoyance.Current = 0;                    
-                    controller.storage.teams.save(team_data, function(err){
-                    if(err){
-                        console.log(err);  
-                    } else {                 
-                        let response = "'";
-                        if(offendingWords.length === 1){
-                            response = _.upperFirst(offendingWords[0])+ "'? " + selectResponse();
-                        } else if(offendingWords.length === 2){
-                            response = _.upperFirst(offendingWords[0])+ "' and '"+ offendingWords[1] + "'? " + selectResponse();
+                if (canBeGross && offendingWords.length > 0 && team_data.annoyance.LevelSet <= team_data.annoyance.Current) {
+                    team_data.annoyance.Current = 0;
+                    controller.storage.teams.save(team_data, function (err) {
+                        if (err) {
+                            console.log(err);
                         } else {
-                            let first = _.upperFirst(offendingWords.shift());
-                            let last = offendingWords.pop();
-                            response = offendingWords.reduce((accumulator, value) => {
-                                return  accumulator + "'" +value + "', ";
-                            }, "'" + first + "', ");
-                            response += "and '" + last + "'? " + selectResponse();
+                            let response = "'";
+                            if (offendingWords.length === 1) {
+                                response += _.upperFirst(offendingWords[0]) + "'? " + selectResponse();
+                            } else if (offendingWords.length === 2) {
+                                response += _.upperFirst(offendingWords[0]) + "' and '" + offendingWords[1] + "'? " + selectResponse();
+                            } else {
+                                let first = _.upperFirst(offendingWords.shift());
+                                let last = offendingWords.pop();
+                                response = offendingWords.reduce((accumulator, value) => {
+                                    return accumulator + "'" + value + "', ";
+                                }, "'" + first + "', ");
+                                response += "and '" + last + "'? " + selectResponse();
+                            }
+                            bot.reply(message, response);
                         }
-                        bot.reply(message, response);
-                }
-                        }); 
+                    });
                 } else {
-                   controller.storage.teams.save(team_data, function(err){
+                    controller.storage.teams.save(team_data, function (err) {
                         console.log(err);
-                    }); 
+                    });
                 }
-                
+
             } else {
                 console.log(err);
             }
