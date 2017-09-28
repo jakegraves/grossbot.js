@@ -31,29 +31,35 @@ module.exports = function (controller) {
     });
 
     //Add a reaction to grossbot. 
-    controller.hears('^add (.*)', 'direct_message,direct_mention', function(bot, message) {
+    controller.hears('^add (.*)', 'direct_message,direct_mention', function (bot, message) {
         let trigger = message.match[1];
 
-        //TODO: Right now I'm making the assumption that reaction is an image.
+        if (trigger) {
 
-        if (trigger && responses.indexOf(trigger)===-1){
-            bot.reply(message, "You're right, \"" + trigger + "\" is pretty gross."); 
+            controller.storage.teams.get(message.team, function (err, team_data) {
 
-            controller.storage.teams.get(message.team, function(err, team_data){
-                //console.debug(err)
-                //console.debug(team_data)
-                if(!err){
-                    team_data.triggers = team_data.triggers || []; //Create a new triggers obj if it doesnt exist
-                    team_data.triggers.push(trigger);
-                   
-                    // Save new team_data in database
-                    controller.storage.teams.save(team_data, function(err){
-                        console.log(err);
+                if (!err) {
+
+                    let lowerTrigger = _.toLower(trigger);
+                    let existingTrigger = _.find(team_data.triggers, (word) => {
+                        return lowerTrigger === word;
                     });
 
-                    //Add trigger to trigger list now that reaction is in db
-                    keywords.push(trigger);
+                    if (existingTrigger) {
+                        bot.reply(message, "I'm already calling \"" + trigger + "\" gross.");
+                    } else {
+                        bot.reply(message, "I'll start calling \"" + trigger + "\" gross.");
+                        team_data.triggers = team_data.triggers || []; //Create a new triggers obj if it doesnt exist
+                        team_data.triggers.push(lowerTrigger);
 
+                        // Save new team_data in database
+                        controller.storage.teams.save(team_data, function (err) {
+                            console.log(err);
+                        });
+
+                        //Add trigger to trigger list now that reaction is in db
+                        keywords.push(trigger);
+                    }
                 } else if (err.displayName === 'NotFound') { // If team does not exist in db, create a new team entry!
                     // Save new team_data in database
                     controller.storage.teams.save({
