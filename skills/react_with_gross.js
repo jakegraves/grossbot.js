@@ -312,6 +312,9 @@ https://hashidevgross.herokuapp.com/contact.html
                 var offendingWords = _.filter(triggers, function(word){
                     return message.text.indexOf(word) > -1;
                 });
+                
+                //When printed out, it's nice to have them in order.
+                offendingWords = offendingWords.reverse();
 
                 offendingWords.length ? team_data.annoyance.Current++ : team_data.annoyance.Current +=0;
 
