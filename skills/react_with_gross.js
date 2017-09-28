@@ -333,9 +333,9 @@ https://hashidevgross.herokuapp.com/contact.html
                             let first = _.upperFirst(offendingWords.shift());
                             let last = offendingWords.pop();
                             response = offendingWords.reduce((accumulator, value) => {
-                                return accumulator + value + ", ";
-                            }, first + ", ");
-                            response += "and " + last + "? " + selectResponse();
+                                return "'" + accumulator + value + "', ";
+                            }, "'" + first + "', ");
+                            response += "and '" + last + "'? " + selectResponse();
                         }
                         bot.reply(message, response);
                 }
