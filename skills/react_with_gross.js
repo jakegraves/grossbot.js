@@ -81,27 +81,33 @@ module.exports = function (controller) {
     });
 
     // Remove command
-    controller.hears('^remove (.*)', 'direct_message,direct_mention', function(bot, message) {
-        if (trigger = message.match[1]){
-            
-            // Remove from db (actually just another add that overwrites)
-            controller.storage.teams.get(message.team, function(err, team_data){
-                if(!err){
-                    if (team_data.triggers){
+    controller.hears('^remove (.*)', 'direct_message,direct_mention', function (bot, message) {
+        if (trigger = message.match[1]) {
+
+            controller.storage.teams.get(message.team, function (err, team_data) {
+                if (!err) {
+
+                    let lowerTrigger = _.toLower(trigger);
+                    let existingTrigger = _.find(team_data.triggers, (word) => {
+                        return lowerTrigger === word;
+                    });
+
+                    if (!existingTrigger) {
+                        bot.reply(message, "That word doesn't exist.");
+                    } else {
                         var index = team_data.triggers.indexOf(trigger);
                         team_data.triggers.splice(index, 1);
                         index = keywords.indexOf(trigger);
                         keywords.splice(index, 1);
                         // Save changed team_data in database
-                        controller.storage.teams.save(team_data, function(err){
+                        controller.storage.teams.save(team_data, function (err) {
                             console.log(err);
                         });
                         bot.reply(message, "I removed the word " + trigger + ".");
-                    } else {
-                        bot.reply(message, "That word doesn't exist.");
                     }
+
                 } else {
-                    console.log(err); 
+                    console.log(err);
                 }
             });
 
