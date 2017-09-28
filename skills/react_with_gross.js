@@ -1,4 +1,3 @@
-//TODO: Use debug() statements
 
 module.exports = function(controller) {
 
