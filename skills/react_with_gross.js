@@ -117,12 +117,17 @@ module.exports = function(controller) {
 
                 let team = all_team_data.find(team => team.id === message.team);
                 console.log("Team Name: " + team);
+                let level = 1;
+                if(team.annoyance){
+                    level = team.annoyance.LevelSet;
+                }
                 if(team && team.triggers){
                     let trigger_list = keywords.sort();
                     let response = trigger_list.reduce((accumulator, value) => {
                         return accumulator + value + ",";
                     }, "Trigger word list: \n ```");
-                    response += "``` To use any of the above, see help command"; 
+                    
+                    response += "```\nMy annoyance level is set to " + level + "."; 
 
                     bot.reply(message, response);
                 } else {
