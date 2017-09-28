@@ -292,7 +292,8 @@ https://hashidevgross.herokuapp.com/contact.html
         controller.storage.teams.get(message.team, (err, team_data) => {
             if(!err){
                 let triggers = team_data.triggers;
-                let annoyance = team_data.annoyance || {LevelSet: 1, Current:0};
+                team_data.annoyance = team_data.annoyance || {LevelSet: 1, Current:0};
+                let annoyance = team_data.annoyance;
                 let now = new Date();
                 let canBeGross = true;  
                 
@@ -327,7 +328,11 @@ https://hashidevgross.herokuapp.com/contact.html
                         response += " and " + last + "? " + selectResponse();
                     }
                         bot.reply(message, response);
+                        annoyance.Current = 0;
                 }
+                controller.storage.teams.save(team_data, function(err){
+                    console.log(err);
+                });
             } else {
                 console.log(err);
             }
