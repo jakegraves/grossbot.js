@@ -226,7 +226,9 @@ module.exports = function(controller) {
         }else {
         controller.storage.teams.get(message.team, (err, team_data) => {
             if(!err){
-                team_data.annoyance = team_data.annoyance || {LevelSet: level, Current:0};
+                team_data.annoyance = team_data.annoyance || {};
+                team_data.annoyance.LevelSet = level;
+                team_data.annoyance.Current = 0;
                 controller.storage.teams.save(team_data, function(err){
                     console.log(err);
                     if(err){
