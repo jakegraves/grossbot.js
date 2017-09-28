@@ -312,7 +312,7 @@ https://hashidevgross.herokuapp.com/contact.html
 
                 offendingWords.length ? annoyance.Current++ : annoyance.Current +=0;
 
-                if(canBeGross && offendingWords.length > 0 && annoyance.LevelSet === annoyance.Current){
+                if(canBeGross && offendingWords.length > 0 && annoyance.LevelSet <= annoyance.Current){
                     let response;
                     if(offendingWords.length === 1){
                         response = _.upperFirst(offendingWords[0])+ "? " + selectResponse();
