@@ -4,24 +4,6 @@ module.exports = function(controller) {
 
     // To allow for easy manipulation of trigger words, we then get only the keys
     // and put it into an array
-    var responses = [
-        "Gross.",
-        "Sick.",
-        "Gross!",
-        "Heh.",
-        "That's what she said? Gross.",
-        "Eww.",
-        "Ugh.",
-        "...",
-        "...phrasing.",
-        "Uh, phrasing.",
-        "Phrasing!",
-        ":grimacing:",
-        ":point_up_2:",
-        "http://replygif.net/i/132.gif",
-        "http://replygif.net/i/131.gif",
-        ":gross:"
-    ]
     var keywords = [];
 
     //TODO: Create different handlers for each team instead of handling all of them in these handlers here
@@ -315,7 +297,10 @@ https://hashidevgross.herokuapp.com/contact.html
             }
         });
     });
-
+var responses = [
+    "Gross.",
+    "That's what she said."
+]
     function selectResponse(){
         return responses[Math.floor(Math.random() * responses.length)];
     }
