@@ -112,11 +112,7 @@ module.exports = function(controller) {
     controller.hears('^list', 'direct_message,direct_mention', function(bot, message){
         controller.storage.teams.all((err, all_team_data) => {
             if(!err){
-                console.log(message.team + ' is asking for a keyword list!');
-                console.log(all_team_data);
-
                 let team = all_team_data.find(team => team.id === message.team);
-                console.log("Team Name: " + team);
                 let level = 1;
                 if(team.annoyance){
                     level = team.annoyance.LevelSet;
