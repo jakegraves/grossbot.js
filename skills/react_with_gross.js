@@ -332,7 +332,7 @@ https://hashidevgross.herokuapp.com/contact.html
                             response = offendingWords.reduce((accumulator, value) => {
                                 return accumulator + value + ", ";
                             }, first + ", ");
-                            response += " and " + last + "? " + selectResponse();
+                            response += "and " + last + "? " + selectResponse();
                         }
                         bot.reply(message, response);
                 }
