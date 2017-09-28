@@ -125,12 +125,12 @@ module.exports = function(controller) {
                     
                     response += "```\nMy annoyance level is set to " + level + "."; 
 
-                    bot.whisper(message, response);
+                    bot.reply(message, response);
                 } else {
-                    bot.whisper(message, "I couldn't find any triggers words registered for team. :/");
+                    bot.reply(message, "I couldn't find any triggers words registered for team. :/");
                 }
             } else {
-                bot.whisper(message, "Sorry, I couldn't get the list of keywords");
+                bot.reply(message, "Sorry, I couldn't get the list of keywords");
                 console.log(err);
             }
         });
