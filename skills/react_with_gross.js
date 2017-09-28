@@ -218,6 +218,28 @@ module.exports = function(controller) {
         });        
     });
 
+    controller.hears("^set annoyance level (.*)", 'direct_message,direct_mention', function(bot, message){
+        let level = Number(message.match[1]);
+        if(isNaN(level) || level > 10 || level < 1){
+            bot.reply(message, "Please provide a number between 1 (most annoying) and 10 (least annoying).")
+        }else {
+        controller.storage.teams.get(message.team, (err, team_data) => {
+            if(!err){
+                team_data.annoyance = team_data.annoyance || {LevelSet: level, Current:0};
+                controller.storage.teams.save(team_data, function(err){
+                    console.log(err);
+                    if(err){
+                        bot.reply(message, "Something went wrong. Please try again later.");
+                    }
+                    bot.reply(message, "Annoyance level set at " + level + ".");                    
+                });
+            } else {
+                console.log(err); 
+            }
+        });
+    }        
+    });
+
     function sleepCommand(team_data, entityId) {
         team_data.sleep = team_data.sleep || {};
         let sleepUntil = new Date();
@@ -256,6 +278,7 @@ COMMANDS:
 *gross*: GrossBot will listen to you ambiently
 *sleep*: GrossBot won't comment on the channel for an hour
 *wake up*: GrossBot starts commenting again
+*set annoyance level <number>*: 1 being the most annoying, 10 the least.
 *help*: Show this help message                            
 
 Have a feature request, bug report, or general inquiry? Please contact us here:
@@ -268,6 +291,8 @@ https://hashidevgross.herokuapp.com/contact.html
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function(bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
             if(!err){
+                let triggers = team_data.triggers;
+                let annoyance = team_data.annoyance || {LevelSet: 1, Current:0};
                 let now = new Date();
                 let canBeGross = true;  
                 controller.log.info("Now:");                
@@ -283,13 +308,27 @@ https://hashidevgross.herokuapp.com/contact.html
                     canBeGross = now.getTime() > userSleepTime.getTime();
                 }
                 
-                if(canBeGross === true){
-                    bot.reply(message, {
-                        'username': 'GrossBot',
-                        'text': selectResponse(),
-                    });
-                } else{
-                    controller.log.info("I was told to sleep either in channel or by user.")
+                var offendingWords = _.filter(triggers, function(word){
+                    return message.text.indexOf(word) > -1;
+                });
+
+                offendingWords.length ? annoyance.Current++ : annoyance.Current +=0;
+
+                if(canBeGross && offendingWords.length > 0 && annoyance.LevelSet === annoyance.Current){
+                    let response;
+                    if(offendingWords.length === 1){
+                        response = _.upperFirst(offendingWords[0])+ "? " + selectResponse();
+                    } else if(offendingWords.length === 2){
+                        response = _.upperFirst(offendingWords[0])+ " and "+ offendingWords[1] + "? " + selectResponse();
+                    } else {
+                        let first = _.upperFirst(offendingWords.shift());
+                        let last = offendingWords.pop();
+                        let response = offendingWords.reduce((accumulator, value) => {
+                            return accumulator + value + ", ";
+                        }, first + ", ");
+                        response += " and " + last + "? " + selectResponse();
+                    }
+                        bot.reply(message, response);
                 }
             } else {
                 console.log(err);
