@@ -357,13 +357,15 @@ https://hashidevgross.herokuapp.com/contact.html
             }
         });
     });
-var responses = [
-    "Gross.",
-    "That's what she said."
-]
-    function selectResponse(){
+    var responses = [
+        "Gross.",
+        "Gross.",
+        "Gross.",
+        "That's what she said."
+    ]
+    function selectResponse() {
         return responses[Math.floor(Math.random() * responses.length)];
     }
 
-    
+
 };
