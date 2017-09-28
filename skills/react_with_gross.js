@@ -295,8 +295,6 @@ https://hashidevgross.herokuapp.com/contact.html
                 let annoyance = team_data.annoyance || {LevelSet: 1, Current:0};
                 let now = new Date();
                 let canBeGross = true;  
-                controller.log.info("Now:");                
-                controller.log.info(now.toISOString());
                 
                 if(team_data.sleep[message.channel]){
                     let channelSleepTime = new Date(team_data.sleep[message.channel]);
