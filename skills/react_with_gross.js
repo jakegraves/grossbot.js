@@ -317,18 +317,30 @@ https://hashidevgross.herokuapp.com/contact.html
 
                 if(canBeGross && offendingWords.length > 0 && team_data.annoyance.LevelSet <= team_data.annoyance.Current){
                     team_data.annoyance.Current = 0;                    
-                    if(offendingWords.length === 1){
-                        response = _.upperFirst(offendingWords[0])+ "? " + selectResponse();
-                    } else if(offendingWords.length === 2){
-                        response = _.upperFirst(offendingWords[0])+ " and "+ offendingWords[1] + "? " + selectResponse();
-                    } else {
-                        let first = _.upperFirst(offendingWords.shift());
-                        let last = offendingWords.pop();
-                        let response = offendingWords.reduce((accumulator, value) => {
-                            return accumulator + value + ", ";
-                        }, first + ", ");
-                        response += " and " + last + "? " + selectResponse();
-                    }
+                    controller.storage.teams.save(team_data, function(err){
+                    if(err){
+                        console.log(err);  
+                    } else {                 
+                        let response = "";
+                        if(offendingWords.length === 1){
+                            response = _.upperFirst(offendingWords[0])+ "? " + selectResponse();
+                        } else if(offendingWords.length === 2){
+                            response = _.upperFirst(offendingWords[0])+ " and "+ offendingWords[1] + "? " + selectResponse();
+                        } else {
+                            let first = _.upperFirst(offendingWords.shift());
+                            let last = offendingWords.pop();
+                            response = offendingWords.reduce((accumulator, value) => {
+                                return accumulator + value + ", ";
+                            }, first + ", ");
+                            response += " and " + last + "? " + selectResponse();
+                        }
+                        bot.reply(message, response);
+                }
+                        }); 
+                } else {
+                   controller.storage.teams.save(team_data, function(err){
+                        console.log(err);
+                    }); 
                 }
                 
             } else {
