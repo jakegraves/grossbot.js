@@ -76,10 +76,10 @@ module.exports = function (controller) {
                 }
             });
         } else {
-            bot.reply(message, "Stop trying to create an infinite loop!");
+            bot.reply(message, "Please type an actual word.");
         }
     });
-    
+
     // Remove command
     controller.hears('^remove (.*)', 'direct_message,direct_mention', function(bot, message) {
         if (trigger = message.match[1]){
