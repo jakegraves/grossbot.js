@@ -296,7 +296,6 @@ https://hashidevgross.herokuapp.com/contact.html
             if(!err){
                 let triggers = team_data.triggers;
                 team_data.annoyance = team_data.annoyance || {LevelSet: 1, Current:0};
-                let annoyance = team_data.annoyance;
                 let now = new Date();
                 let canBeGross = true;  
                 
@@ -314,10 +313,10 @@ https://hashidevgross.herokuapp.com/contact.html
                     return message.text.indexOf(word) > -1;
                 });
 
-                offendingWords.length ? annoyance.Current++ : annoyance.Current +=0;
+                offendingWords.length ? team_data.annoyance.Current++ : team_data.annoyance.Current +=0;
 
-                if(canBeGross && offendingWords.length > 0 && annoyance.LevelSet <= annoyance.Current){
-                    let response;
+                if(canBeGross && offendingWords.length > 0 && team_data.annoyance.LevelSet <= team_data.annoyance.Current){
+                    team_data.annoyance.Current = 0;                    
                     if(offendingWords.length === 1){
                         response = _.upperFirst(offendingWords[0])+ "? " + selectResponse();
                     } else if(offendingWords.length === 2){
@@ -330,12 +329,8 @@ https://hashidevgross.herokuapp.com/contact.html
                         }, first + ", ");
                         response += " and " + last + "? " + selectResponse();
                     }
-                        bot.reply(message, response);
-                        annoyance.Current = 0;
                 }
-                controller.storage.teams.save(team_data, function(err){
-                    console.log(err);
-                });
+                
             } else {
                 console.log(err);
             }
