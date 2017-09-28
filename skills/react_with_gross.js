@@ -135,7 +135,7 @@ module.exports = function(controller) {
         });
     });
 
-    controller.hears('^explain (.*)', 'direct_message,direct_mention', function(bot, message){
+    /**controller.hears('^explain (.*)', 'direct_message,direct_mention', function(bot, message){
         var sentence = message.match[1].toLowerCase();
         var offendingWords = _.filter(keywords, function(word){
             return sentence.indexOf(word) > -1;
@@ -157,7 +157,7 @@ module.exports = function(controller) {
 
         bot.reply(message, response);
                 
-    });
+       });**/
 
     controller.hears('^what is your purpose?', 'direct_message,direct_mention', function(bot, message){
         bot.reply(message, "To call you gross. I'm not programmed for friendship.");
@@ -251,7 +251,6 @@ module.exports = function(controller) {
 COMMANDS:                                                                       
 *add <trigger>*: Tell GrossBot to react to any text you give.
 *remove <trigger>*: Tell GrossBot to stop listening to a <trigger> word
-*explain <message>*: Ask GrossBot why a message was called out as "gross"  
 *list*: Show all the trigger phrases GrossBot is listening for
 *don't be gross*: GrossBot won't listen to you ambiently for an hour
 *gross*: GrossBot will listen to you ambiently
