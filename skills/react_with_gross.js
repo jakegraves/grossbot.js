@@ -1,7 +1,7 @@
-var _ = require('lodash');
 
 module.exports = function (controller) {
-
+    var _ = require('lodash');
+    
     // To allow for easy manipulation of trigger words, we then get only the keys
     // and put it into an array
     var keywords = [];
@@ -326,7 +326,7 @@ https://hashidevgross.herokuapp.com/contact.html
                 });
 
                 //When printed out, it's nice to have them in order.
-                offendingWords = _.unique(offendingWords.reverse());
+                offendingWords = _.uniq(offendingWords.reverse());
 
                 offendingWords.length ? team_data.annoyance.Current++ : team_data.annoyance.Current += 0;
 
