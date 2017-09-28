@@ -324,16 +324,16 @@ https://hashidevgross.herokuapp.com/contact.html
                     if(err){
                         console.log(err);  
                     } else {                 
-                        let response = "";
+                        let response = "'";
                         if(offendingWords.length === 1){
-                            response = _.upperFirst(offendingWords[0])+ "? " + selectResponse();
+                            response = _.upperFirst(offendingWords[0])+ "'? " + selectResponse();
                         } else if(offendingWords.length === 2){
-                            response = _.upperFirst(offendingWords[0])+ " and "+ offendingWords[1] + "? " + selectResponse();
+                            response = _.upperFirst(offendingWords[0])+ "' and '"+ offendingWords[1] + "'? " + selectResponse();
                         } else {
                             let first = _.upperFirst(offendingWords.shift());
                             let last = offendingWords.pop();
                             response = offendingWords.reduce((accumulator, value) => {
-                                return "'" + accumulator + value + "', ";
+                                return  accumulator + "'" +value + "', ";
                             }, "'" + first + "', ");
                             response += "and '" + last + "'? " + selectResponse();
                         }
