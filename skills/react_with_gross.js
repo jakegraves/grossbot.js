@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-module.exports = function(controller) {
+module.exports = function (controller) {
 
     // To allow for easy manipulation of trigger words, we then get only the keys
     // and put it into an array
@@ -10,19 +10,19 @@ module.exports = function(controller) {
 
     // Load keywords with team-scope triggers from storage
     controller.storage.teams.all((err, all_team_data) => {
-        if(!err){
+        if (!err) {
             all_team_data.forEach((team_data) => {
-                if(team_data.triggers){
+                if (team_data.triggers) {
                     let team_triggers = team_data.triggers;
                     team_triggers.forEach((trigger) => {
                         // I'm directly mutating keywords cause Javascript is pass by a COPY of a reference
-                        keywords.push(trigger); 
+                        keywords.push(trigger);
                     });
                 } else {
                     console.log('Could not find triggers for team with id: ' + team_data.id);
                 }
             });
-        } else{
+        } else {
             console.log(err);
         }
 
@@ -109,21 +109,21 @@ module.exports = function(controller) {
     });
 
     // List command
-    controller.hears('^list', 'direct_message,direct_mention', function(bot, message){
+    controller.hears('^list', 'direct_message,direct_mention', function (bot, message) {
         controller.storage.teams.all((err, all_team_data) => {
-            if(!err){
+            if (!err) {
                 let team = all_team_data.find(team => team.id === message.team);
                 let level = 1;
-                if(team.annoyance){
+                if (team.annoyance) {
                     level = team.annoyance.LevelSet;
                 }
-                if(team && team.triggers){
+                if (team && team.triggers) {
                     let trigger_list = keywords.sort();
                     let response = trigger_list.reduce((accumulator, value) => {
                         return accumulator + value + ",";
                     }, "Trigger word list: \n ```");
-                    
-                    response += "```\nMy annoyance level is set to " + level + "."; 
+
+                    response += "```\nMy annoyance level is set to " + level + ".";
 
                     bot.reply(message, response);
                 } else {
@@ -160,97 +160,97 @@ module.exports = function(controller) {
                 
        });**/
 
-    controller.hears('^what is your purpose?', 'direct_message,direct_mention', function(bot, message){
+    controller.hears('^what is your purpose?', 'direct_message,direct_mention', function (bot, message) {
         bot.reply(message, "To call you gross. I'm not programmed for friendship.");
     });
 
-    controller.hears('^sleep', 'direct_mention', function(bot, message){
-        controller.storage.teams.get(message.team, function(err, team_data){
-            if(!err){
+    controller.hears('^sleep', 'direct_mention', function (bot, message) {
+        controller.storage.teams.get(message.team, function (err, team_data) {
+            if (!err) {
                 sleepCommand(team_data, message.channel);
                 bot.reply(message, "Okay, I won't message in this channel for an hour.");
             } else {
-                console.log(err); 
+                console.log(err);
             }
         });
     });
 
-    controller.hears('^wake up', 'direct_mention', function(bot, message){
-        controller.storage.teams.get(message.team, function(err, team_data){
-            if(!err){
+    controller.hears('^wake up', 'direct_mention', function (bot, message) {
+        controller.storage.teams.get(message.team, function (err, team_data) {
+            if (!err) {
                 awakeCommand(team_data, message.channel);
                 bot.reply(message, "I'm awake! This channel is under my protection. \n ..gross.");
             } else {
-                console.log(err); 
+                console.log(err);
             }
         });
     });
 
-    controller.hears("^don't be gross tammy", 'direct_message,direct_mention', function(bot, message){
+    controller.hears("^don't be gross tammy", 'direct_message,direct_mention', function (bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
+            if (!err) {
                 sleepCommand(team_data, message.user);
                 bot.reply(message, "In bird culture, that is what we call a \"dick move\". I'll leave you alone for an hour.");
             } else {
-                console.log(err); 
+                console.log(err);
             }
-        }); 
+        });
     });
 
-    controller.hears("^don't be gross", 'direct_message,direct_mention', function(bot, message){
+    controller.hears("^don't be gross", 'direct_message,direct_mention', function (bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
+            if (!err) {
                 sleepCommand(team_data, message.user);
                 bot.reply(message, "Okay, I won't respond to your messages for an hour.");
             } else {
-                console.log(err); 
+                console.log(err);
             }
-        });        
+        });
     });
 
-    controller.hears("^gross", 'direct_message,direct_mention', function(bot, message){
+    controller.hears("^gross", 'direct_message,direct_mention', function (bot, message) {
         controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
+            if (!err) {
                 awakeCommand(team_data, message.user);
                 bot.reply(message, "I know, right? I've got you covered... in gross.");
             } else {
-                console.log(err); 
-            }
-        });        
-    });
-
-    controller.hears("^set annoyance level (.*)", 'direct_message,direct_mention', function(bot, message){
-        let level = Number(message.match[1]);
-        if(isNaN(level) || level > 10 || level < 1){
-            bot.reply(message, "Please provide a number between 1 (most annoying) and 10 (least annoying).")
-        }else {
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if(!err){
-                team_data.annoyance = team_data.annoyance || {};
-                team_data.annoyance.LevelSet = level;
-                team_data.annoyance.Current = 0;
-                controller.storage.teams.save(team_data, function(err){
-                    console.log(err);
-                    if(err){
-                        bot.reply(message, "Something went wrong. Please try again later.");
-                    }
-                    bot.reply(message, "Annoyance level set at " + level + ".");                    
-                });
-            } else {
-                console.log(err); 
+                console.log(err);
             }
         });
-    }        
+    });
+
+    controller.hears("^set annoyance level (.*)", 'direct_message,direct_mention', function (bot, message) {
+        let level = Number(message.match[1]);
+        if (isNaN(level) || level > 10 || level < 1) {
+            bot.reply(message, "Please provide a number between 1 (most annoying) and 10 (least annoying).")
+        } else {
+            controller.storage.teams.get(message.team, (err, team_data) => {
+                if (!err) {
+                    team_data.annoyance = team_data.annoyance || {};
+                    team_data.annoyance.LevelSet = level;
+                    team_data.annoyance.Current = 0;
+                    controller.storage.teams.save(team_data, function (err) {
+                        console.log(err);
+                        if (err) {
+                            bot.reply(message, "Something went wrong. Please try again later.");
+                        }
+                        bot.reply(message, "Annoyance level set at " + level + ".");
+                    });
+                } else {
+                    console.log(err);
+                }
+            });
+        }
     });
 
     function sleepCommand(team_data, entityId) {
         team_data.sleep = team_data.sleep || {};
         let sleepUntil = new Date();
-        sleepUntil.setHours(new Date().getHours()+1);
+        sleepUntil.setHours(new Date().getHours() + 1);
         team_data.sleep[entityId] = sleepUntil.toISOString();
-        controller.storage.teams.save(team_data, function(err){
+        controller.storage.teams.save(team_data, function (err) {
             console.log(err);
-            if(err){
+            if (err) {
                 bot.reply(message, "Something went wrong. Please try again later.");
             }
         });
@@ -259,19 +259,19 @@ module.exports = function(controller) {
     function awakeCommand(team_data, entityId) {
         team_data.sleep = team_data.sleep || {};
         delete team_data.sleep[entityId];
-        controller.storage.teams.save(team_data, function(err){
+        controller.storage.teams.save(team_data, function (err) {
             console.log(err);
-            if(err){
+            if (err) {
                 bot.reply(message, "Something went wrong. Please try again later.");
             }
         });
     }
 
- 
+
 
     // Help command
-    controller.hears('^help', 'direct_message,direct_mention', function(bot, message){
-        let version = process.env.VERSION || ""                                             
+    controller.hears('^help', 'direct_message,direct_mention', function (bot, message) {
+        let version = process.env.VERSION || ""
         let help_message = `GrossBot ${version}                                             
 COMMANDS:                                                                       
 *add <trigger>*: Tell GrossBot to react to any text you give.
