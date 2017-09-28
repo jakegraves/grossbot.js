@@ -1,3 +1,4 @@
+var _ = require('lodash');
 
 module.exports = function(controller) {
 
@@ -164,7 +165,6 @@ module.exports = function(controller) {
     });
 
     controller.hears('^explain (.*)', 'direct_message,direct_mention', function(bot, message){
-        var _ = require('lodash');
         var sentence = message.match[1].toLowerCase();
         var offendingWords = _.filter(keywords, function(word){
             return sentence.indexOf(word) > -1;
