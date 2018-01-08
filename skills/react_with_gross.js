@@ -305,6 +305,7 @@ https://hashidevgross.herokuapp.com/contact.html
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
         debug(message);
+        console.log(message);
         bot.api.reactions.add({
             name: selectReaction(),
             timestamp: message.event_time
