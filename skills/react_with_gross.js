@@ -306,7 +306,7 @@ https://hashidevgross.herokuapp.com/contact.html
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
         bot.api.reactions.add({
             name: selectReaction(),
-            timestamp: message.ts,
+            timestamp: message.event_ts,
             channel: message.channel
         }, function(err, response){
             if(err){
