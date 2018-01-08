@@ -377,10 +377,10 @@ https://hashidevgross.herokuapp.com/contact.html
 
     controller.on('reaction_added', function(bot, event){
         console.log(event);
-        if(["lipstick"," mushroom", "eggplant", "banana", "cancer", "peach", "sweat_drops", "cancer", "fist", "wave"].some(function(element){
+        if(["lipstick"," mushroom", "eggplant", "banana", "cancer", "peach", "sweat_drops", "fist", "wave"].some(function(element){
             return event.reaction === element;
         })){
-            bot.reply(event.item,  "Gross.");
+            bot.reply(event.item, ":" + event.reaction + ": Gross. :" + event.reaction + ":");
         }
     });
 
