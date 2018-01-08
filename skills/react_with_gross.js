@@ -377,9 +377,9 @@ https://hashidevgross.herokuapp.com/contact.html
 
     controller.on('reaction_added', function(bot, event){
         if(event.reaction === "eggplant"){
-            bot.reply(event, "Gross.");
+            bot.reply(event, {channel: event.item.channel, text: "Gross."});
         } else if (event.reaction === "cancer"){
-            bot.reply(event, "69? Gross.");
+            bot.reply(event, {channel: event.item.channel, text: "69? Gross."});
         }
     });
 
