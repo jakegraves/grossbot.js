@@ -377,12 +377,12 @@ https://hashidevgross.herokuapp.com/contact.html
 
     controller.on('reaction_added', function(bot, event){
         if(event.reaction === "eggplant"){
-            bot.reply(message, "Gross.");
+            bot.reply(event, "Gross.");
         } else if (event.reaction === "cancer"){
-            bot.reply(message, "69? Gross.");
+            bot.reply(event, "69? Gross.");
         }
     });
-    
+
     var responses = [
         "Gross.",
         "Gross.",
