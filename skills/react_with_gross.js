@@ -308,7 +308,7 @@ https://hashidevgross.herokuapp.com/contact.html
         console.log(message);
         bot.api.reactions.add({
             name: selectReaction(),
-            timestamp: message.event_time
+            timestamp: message.ts
         }, function(err, response){
             if(err){
                 console.log(err);
