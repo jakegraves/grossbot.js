@@ -148,30 +148,6 @@ module.exports = function (controller) {
         });
     });
 
-    /**controller.hears('^explain (.*)', 'direct_message,direct_mention', function(bot, message){
-        var sentence = message.match[1].toLowerCase();
-        var offendingWords = _.filter(keywords, function(word){
-            return sentence.indexOf(word) > -1;
-        });
-        let response;
-        if(offendingWords.length === 0){
-            response = "Looks clean to me.";        
-        }else{
-            response = offendingWords.reduce((accumulator, value) => {
-                return accumulator + "\"" + value + "\", ";
-            }, "I called that message out because ");
-    
-            if(offendingWords.length === 1){
-                response = response.replace(",","") + "was typed out and that's gross."; 
-            } else{
-                response += "were typed out and it's super gross.";             
-            }
-        }
-
-        bot.reply(message, response);
-                
-       });**/
-
     controller.hears('^what is your purpose?', 'direct_message,direct_mention', function (bot, message) {
         bot.reply(message, "To call you gross. I'm not programmed for friendship.");
     });
@@ -196,63 +172,6 @@ module.exports = function (controller) {
                 console.log(err);
             }
         });
-    });
-
-    controller.hears("^don't be gross tammy", 'direct_message,direct_mention', function (bot, message) {
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if (!err) {
-                sleepCommand(team_data, message.user);
-                bot.reply(message, "In bird culture, that is what we call a \"dick move\". I'll leave you alone for an hour.");
-            } else {
-                console.log(err);
-            }
-        });
-    });
-
-    controller.hears("^don't be gross", 'direct_message,direct_mention', function (bot, message) {
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if (!err) {
-                sleepCommand(team_data, message.user);
-                bot.reply(message, "Okay, I won't respond to your messages for an hour.");
-            } else {
-                console.log(err);
-            }
-        });
-    });
-
-    controller.hears("^gross", 'direct_message,direct_mention', function (bot, message) {
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if (!err) {
-                awakeCommand(team_data, message.user);
-                bot.reply(message, "I know, right? I've got you covered... in gross.");
-            } else {
-                console.log(err);
-            }
-        });
-    });
-
-    controller.hears("^set annoyance level (.*)", 'direct_message,direct_mention', function (bot, message) {
-        let level = Number(message.match[1]);
-        if (isNaN(level) || level > 10 || level < 1) {
-            bot.reply(message, "Please provide a number between 1 (most annoying) and 10 (least annoying).")
-        } else {
-            controller.storage.teams.get(message.team, (err, team_data) => {
-                if (!err) {
-                    team_data.annoyance = team_data.annoyance || {};
-                    team_data.annoyance.LevelSet = level;
-                    team_data.annoyance.Current = 0;
-                    controller.storage.teams.save(team_data, function (err) {
-                        console.log(err);
-                        if (err) {
-                            bot.reply(message, "Something went wrong. Please try again later.");
-                        }
-                        bot.reply(message, "Annoyance level set at " + level + ".");
-                    });
-                } else {
-                    console.log(err);
-                }
-            });
-        }
     });
 
     function sleepCommand(team_data, entityId) {
@@ -313,66 +232,6 @@ https://hashidevgross.herokuapp.com/contact.html
                 console.log(err);
             }
         });
-        /** 
-        controller.storage.teams.get(message.team, (err, team_data) => {
-            if (!err) {
-                let triggers = team_data.triggers;
-                team_data.annoyance = team_data.annoyance || { LevelSet: 1, Current: 0 };
-                let now = new Date();
-                let canBeGross = true;
-
-                if (team_data.sleep[message.channel]) {
-                    let channelSleepTime = new Date(team_data.sleep[message.channel]);
-                    canBeGross = now.getTime() > channelSleepTime.getTime();
-                }
-
-                if (team_data.sleep[message.user]) {
-                    let userSleepTime = new Date(team_data.sleep[message.user]);
-                    canBeGross = now.getTime() > userSleepTime.getTime();
-                }
-
-                var offendingWords = _.filter(triggers, function (word) {
-                    return message.text.indexOf(word) > -1;
-                });
-
-                //When printed out, it's nice to have them in order.
-                offendingWords = _.uniq(offendingWords.reverse());
-
-                offendingWords.length ? team_data.annoyance.Current++ : team_data.annoyance.Current += 0;
-
-                if (canBeGross && offendingWords.length > 0 && team_data.annoyance.LevelSet <= team_data.annoyance.Current) {
-                    team_data.annoyance.Current = 0;
-                    controller.storage.teams.save(team_data, function (err) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            let response = "'";
-                            if (offendingWords.length === 1) {
-                                response += _.upperFirst(offendingWords[0]) + "'? " + selectResponse();
-                            } else if (offendingWords.length === 2) {
-                                response += _.upperFirst(offendingWords[0]) + "' and '" + offendingWords[1] + "'? " + selectResponse();
-                            } else {
-                                let first = _.upperFirst(offendingWords.shift());
-                                let last = offendingWords.pop();
-                                response = offendingWords.reduce((accumulator, value) => {
-                                    return accumulator + "'" + value + "', ";
-                                }, "'" + first + "', ");
-                                response += "and '" + last + "'? " + selectResponse();
-                            }
-                            bot.reply(message, response);
-                        }
-                    });
-                } else {
-                    controller.storage.teams.save(team_data, function (err) {
-                        console.log(err);
-                    });
-                }
-
-            } else {
-                console.log(err);
-            }
-        });
-        */
     });
 
     controller.on('reaction_added', function(bot, event){
@@ -383,13 +242,6 @@ https://hashidevgross.herokuapp.com/contact.html
             bot.reply(event.item, ":" + event.reaction + ": Gross. :" + event.reaction + ":");
         }
     });
-
-    var responses = [
-        "Gross.",
-        "Gross.",
-        "Gross.",
-        "That's what she said."
-    ]
 
     var reactions = [
         "grimacing",
@@ -409,9 +261,7 @@ https://hashidevgross.herokuapp.com/contact.html
         "radioactive_sign",
         "biohazard_sign"
     ]
-    function selectResponse() {
-        return responses[Math.floor(Math.random() * responses.length)];
-    }
+
     function selectReaction() {
         return reactions[Math.floor(Math.random() * reactions.length)];
     }
