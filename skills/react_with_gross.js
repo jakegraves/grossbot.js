@@ -208,13 +208,10 @@ COMMANDS:
 *add <trigger>*: Tell GrossBot to react to any text you give.
 *remove <trigger>*: Tell GrossBot to stop listening to a <trigger> word
 *list*: Show all the trigger phrases GrossBot is listening for
-*don't be gross*: GrossBot won't listen to you ambiently for an hour
-*gross*: GrossBot will listen to you ambiently
-*sleep*: GrossBot won't comment on the channel for an hour
-*wake up*: GrossBot starts commenting again
-*set annoyance level <number>*: 1 being the most annoying, 10 the least.
 *help*: Show this help message                            
 
+I react with "Gross" to the following reactions: 
+:lipstick:, :mushroom:, :eggplant:, :banana:, :cancer:, :peach:, :sweat_drops:, :fist:, and :wave:
 Have a feature request, bug report, or general inquiry? Please contact us here:
 https://hashidevgross.herokuapp.com/contact.html
 `
