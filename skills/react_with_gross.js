@@ -374,6 +374,15 @@ https://hashidevgross.herokuapp.com/contact.html
         });
         */
     });
+
+    controller.on('reaction_added', function(bot, message){
+        if(message.event.reaction === "eggplant"){
+            bot.reply(message, "Gross.");
+        } else if (message.event.reaction === "cancer"){
+            bot.reply(message, "69? Gross.");
+        }
+
+    });
     var responses = [
         "Gross.",
         "Gross.",
