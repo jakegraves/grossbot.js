@@ -304,11 +304,10 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
-        debug(message);
-        console.log(message);
         bot.api.reactions.add({
             name: selectReaction(),
-            timestamp: message.ts
+            timestamp: message.ts,
+            channel: message.channel
         }, function(err, response){
             if(err){
                 console.log(err);
