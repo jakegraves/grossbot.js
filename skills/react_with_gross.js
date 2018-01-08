@@ -1,4 +1,4 @@
-
+var debug = require('debug')('botkit:skills:gross');
 module.exports = function (controller) {
     var _ = require('lodash');
     
@@ -304,6 +304,7 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
+        debug(message);
         bot.api.reactions.add({
             name: selectReaction(),
             timestamp: message.event_time
