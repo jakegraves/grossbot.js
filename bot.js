@@ -16,7 +16,7 @@ var controller = Botkit.slackbot({
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     debug: true,
-    scopes: ['bot'],
+    scopes: ['bot', 'reactions:read', 'reactions:write', 'files:read', 'emoji:read'],
     studio_token: process.env.STUDIO_TOKEN,
     storage: mongoStorage
 });
