@@ -304,6 +304,15 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
+        bot.api.reactions.add({
+            name: selectReaction(),
+            timestamp: message.event_time
+        }, function(err, response){
+            if(err){
+                console.log(err);
+            }
+        });
+        /** 
         controller.storage.teams.get(message.team, (err, team_data) => {
             if (!err) {
                 let triggers = team_data.triggers;
@@ -362,6 +371,7 @@ https://hashidevgross.herokuapp.com/contact.html
                 console.log(err);
             }
         });
+        */
     });
     var responses = [
         "Gross.",
@@ -369,9 +379,30 @@ https://hashidevgross.herokuapp.com/contact.html
         "Gross.",
         "That's what she said."
     ]
+
+    var reactions = [
+        "grimacing",
+        "joy",
+        "smirk", 
+        "frowning",
+        "zipper_mouth_face",
+        "mask",
+        "hankey",
+        "ok_hand",
+        "face_with_rolling_eyes",
+        "lipstick",
+        "mushroom", 
+        "eggplant",
+        "banana",
+        "cancer",
+        "radioactive_sign",
+        "biohazard_sign"
+    ]
     function selectResponse() {
         return responses[Math.floor(Math.random() * responses.length)];
     }
-
+    function selectReaction() {
+        return reactions[Math.floor(Math.random() * reactions.length)];
+    }
 
 };
