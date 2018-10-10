@@ -1,7 +1,7 @@
 var debug = require('debug')('botkit:skills:gross');
 module.exports = function (controller) {
     var _ = require('lodash');
-    
+
     // To allow for easy manipulation of trigger words, we then get only the keys
     // and put it into an array
     var keywords = [];
@@ -220,30 +220,45 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
+        for(var i = 0; i < message.match.length; i += 1) {
+            bot.replyInThread(message, `lol ${message.match[i]}`);
+        }
+
         bot.api.reactions.add({
             name: selectReaction(),
             timestamp: message.event_ts,
             channel: message.channel
-        }, function(err, response){
-            if(err){
+        }, function (err, response) {
+            if (err) {
                 console.log(err);
             }
         });
     });
 
-    controller.on('reaction_added', function(bot, event){
+    controller.on('reaction_added', function (bot, event) {
         console.log(event);
-        if(["lipstick"," mushroom", "eggplant", "banana", "cancer", "peach", "sweat_drops", "fist", "wave"].some(function(element){
-            return event.reaction === element;
-        })){
-            bot.reply(event.item, ":" + event.reaction + ": Gross. :" + event.reaction + ":");
+        if (["lipstick", "mushroom", "eggplant", "banana", "cancer", "peach", "sweat_drops", "fist", "wave"].some(function (element) {
+                return event.reaction === element;
+            })) {
+            bot.api.users.info({
+                    user: event.user
+                },
+                function (err, response) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        var currentUser = response["user"];
+
+                        bot.replyInThread(event.item, `:${event.reaction}: ${currentUser["name"]} thinks that's gross. :${event.reaction}:`);
+                    }
+                });
         }
     });
 
     var reactions = [
         "grimacing",
         "joy",
-        "smirk", 
+        "smirk",
         "frowning",
         "zipper_mouth_face",
         "mask",
@@ -251,7 +266,7 @@ https://hashidevgross.herokuapp.com/contact.html
         "ok_hand",
         "face_with_rolling_eyes",
         "lipstick",
-        "mushroom", 
+        "mushroom",
         "eggplant",
         "banana",
         "cancer",
