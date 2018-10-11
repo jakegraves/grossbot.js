@@ -198,6 +198,21 @@ module.exports = function (controller) {
         });
     }
 
+    function joinMatches(array) {
+        if(array.length === 0){
+            return;
+        }
+        if(array.length === 1){
+            return `${array[0]}? ${selectReaction()}`;
+        } else if(array.length === 2){
+            return `${array[0]} and ${array[1]}? ${selectReaction()}`;
+        } else{
+            var end = array.pop();
+            var main = array.join(", ");
+            return `${main} and ${end}? ${selectReaction()}`;
+        }
+    }
+
 
 
     // Help command
@@ -220,19 +235,7 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
-        for(var i = 0; i < message.match.length; i += 1) {
-            bot.replyInThread(message, `lol ${message.match[i]}`);
-        }
-
-        bot.api.reactions.add({
-            name: selectReaction(),
-            timestamp: message.event_ts,
-            channel: message.channel
-        }, function (err, response) {
-            if (err) {
-                console.log(err);
-            }
-        });
+        bot.replyInThread(message, joinMatches(message.match[i]));
     });
 
     controller.on('reaction_added', function (bot, event) {
@@ -247,31 +250,23 @@ https://hashidevgross.herokuapp.com/contact.html
                     if (err) {
                         console.log(err);
                     } else {
-                        var currentUser = response["user"];
+                        var currentUser = _.upperFirst(response["user"]["name"]);
 
-                        bot.replyInThread(event.item, `:${event.reaction}: ${currentUser["name"]} thinks that's gross. :${event.reaction}:`);
+                        bot.replyInThread(event.item, `:${event.reaction}: ${currentUser} thinks that's gross. :${event.reaction}:`);
                     }
                 });
         }
     });
 
     var reactions = [
-        "grimacing",
-        "joy",
-        "smirk",
-        "frowning",
-        "zipper_mouth_face",
-        "mask",
-        "hankey",
-        "ok_hand",
-        "face_with_rolling_eyes",
-        "lipstick",
-        "mushroom",
-        "eggplant",
-        "banana",
-        "cancer",
-        "radioactive_sign",
-        "biohazard_sign"
+        "lol",
+        "Gross.",
+        "Phrasing.",
+        "That's what she said.",
+        ":joy:",
+        ":smirk:",
+        ":eggplant:",
+        ":banana:"
     ]
 
     function selectReaction() {
