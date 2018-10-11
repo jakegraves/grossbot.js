@@ -235,7 +235,7 @@ https://hashidevgross.herokuapp.com/contact.html
 
     // Listen for a keyword and post a reaction
     controller.hears(keywords, 'ambient,direct_message,direct_mention', function (bot, message) {
-        bot.replyInThread(message, joinMatches(message.match[i]));
+        bot.replyInThread(message, joinMatches(message.match));
     });
 
     controller.on('reaction_added', function (bot, event) {
